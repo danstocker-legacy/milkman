@@ -13,7 +13,7 @@ module.exports = function (grunt) {
         ],
 
         test: [
-            'js/keys/jsTestDriver.conf'
+            'js/jsTestDriver.conf'
         ],
 
         globals: {
