@@ -67,7 +67,7 @@ troop.postpone(milkman, 'Router', function () {
                     this.currentRoute = newRoute;
 
                     // triggering events for changed route
-                    routingEvent.triggerSync(oldRoute);
+                    routingEvent.triggerSync(oldRoute.eventPath);
                 }
             },
 
@@ -145,7 +145,7 @@ troop.postpone(milkman, 'Router', function () {
                     .setPayload(route.nextPayload)
                     .setBeforeRoute(this.currentRoute)
                     .setAfterRoute(route)
-                    .triggerSync(route.routePath);
+                    .triggerSync(route.eventPath);
 
                 return this;
             },

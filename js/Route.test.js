@@ -14,13 +14,17 @@
             m$.Route.create('foo>bar>baz');
         }, "should raise exception on invalid arguments");
 
-        var route = m$.Route.create('foo>bar>baz'.toPath());
+        var routePath = 'foo>bar>baz'.toPath(),
+            route = m$.Route.create(routePath);
 
         strictEqual(route.eventSpace, m$.routingEventSpace,
             "should set event space to routing event space");
 
-        strictEqual(route.eventPath, route.routePath,
-            "should set event path to self");
+        strictEqual(route.routePath, routePath,
+            "should set route path to path specified in slash notation");
+
+        ok(route.eventPath.equals('route>foo>bar>baz'.toPath()),
+            "should set event path to route path prepended with 'route'");
     });
 
     test("Conversion from string", function () {

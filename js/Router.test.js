@@ -21,7 +21,7 @@
 
         routingEvent.addMocks({
             triggerSync: function (targetPath) {
-                strictEqual(targetPath, routingEvent.beforeRoute, "should fire event on before path");
+                strictEqual(targetPath, routingEvent.beforeRoute.eventPath, "should fire event on before path");
             }
         });
 
@@ -183,7 +183,7 @@
 
             triggerSync: function (targetPath) {
                 equal(this.eventName, m$.Router.EVENT_ROUTE_LEAVE, "should trigger route-leave event");
-                strictEqual(targetPath, route.routePath, "should trigger event on specified route");
+                strictEqual(targetPath, route.eventPath, "should trigger event on specified route");
                 return this;
             }
         });
@@ -316,5 +316,20 @@
         });
 
         router.onHashChange();
+    });
+
+    test("Global route-leave handler", function () {
+        expect(1);
+
+        m$.Router.addMocks({
+            onRouteLeave: function () {
+                ok(true, "should call router's route-leave handler");
+            }
+        });
+
+        m$.routingEventSpace.spawnEvent(m$.Router.EVENT_ROUTE_LEAVE)
+            .triggerSync('foo/bar'.toRoute().eventPath);
+
+        m$.Router.removeMocks();
     });
 }());

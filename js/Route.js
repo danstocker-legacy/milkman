@@ -20,6 +20,14 @@ troop.postpone(milkman, 'Route', function () {
     milkman.Route = self
         .addTraitAndExtend(evan.Evented)
         .setEventSpace(milkman.routingEventSpace)
+        .addConstants(/** @lends milkman.Route */{
+            /**
+             * Root path for all route event paths.
+             * @constant
+             * @type {string}
+             */
+            ROUTE_EVENT_PATH_ROOT: 'route'
+        })
         .addMethods(/** @lends milkman.Route# */{
             /**
              * @param {sntls.Path} routePath
@@ -34,8 +42,11 @@ troop.postpone(milkman, 'Route', function () {
                  */
                 this.routePath = routePath;
 
+                var eventPath = routePath.clone()
+                    .prependKey(this.ROUTE_EVENT_PATH_ROOT);
+
                 // setting event path as self
-                this.setEventPath(routePath);
+                this.setEventPath(eventPath);
             },
 
             /**
