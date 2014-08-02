@@ -146,7 +146,7 @@
     });
 
     test("Navigation", function () {
-        expect(9);
+        expect(7);
 
         var route = 'foo/bar'.toRoute()
                 .setNextOriginalEvent(m$.routingEventSpace.spawnEvent('foo'))
@@ -159,7 +159,6 @@
             setOriginalEvent: function (originalEvent) {
                 routingEvent = this;
 
-                equal(this.eventName, m$.Router.EVENT_ROUTE_LEAVE, "should spawn a route-leave event");
                 strictEqual(originalEvent, route.nextOriginalEvent,
                     "should set original event to next original event stored on route");
                 return this;
@@ -180,17 +179,12 @@
             setAfterRoute: function (afterRoute) {
                 strictEqual(afterRoute, route, "should set after route to specified route");
                 return this;
-            }
-        });
-
-        router.addMocks({
-            _pushRoutingEvent: function (hash, leaveEvent) {
-                equal(hash, '#foo/bar', "should pass hash to event pusher");
-                strictEqual(leaveEvent, routingEvent, "should push leave event to queue");
             },
 
-            _hashSetterProxy: function (hash) {
-                equal(hash, '#foo/bar', "should set the URL hash");
+            triggerSync: function (targetPath) {
+                equal(this.eventName, m$.Router.EVENT_ROUTE_LEAVE, "should trigger route-leave event");
+                strictEqual(targetPath, route.routePath, "should trigger event on specified route");
+                return this;
             }
         });
 
@@ -244,6 +238,60 @@
         });
 
         strictEqual(router.navigateToRouteSilent(route), router, "should be chainable");
+
+        m$.RoutingEvent.removeMocks();
+    });
+
+    test("Route leave handler", function () {
+        expect(8);
+
+        var leaveEvent = m$.routingEventSpace.spawnEvent(m$.Router.EVENT_ROUTE_LEAVE)
+                .setBeforeRoute('foo/bar'.toRoute())
+                .setAfterRoute('hello/world'.toRoute())
+                .setPayload({}),
+            routingEvent;
+
+        m$.RoutingEvent.addMocks({
+            setOriginalEvent: function (originalEvent) {
+                routingEvent = this;
+
+                equal(this.eventName, m$.Router.EVENT_ROUTE_CHANGE, "should spawn a route-leave event");
+                strictEqual(originalEvent, leaveEvent,
+                    "should set original event to leave event");
+                return this;
+            },
+
+            setPayload: function (payload) {
+                strictEqual(payload, leaveEvent.payload,
+                    "should set payload to leave event's payload");
+                return this;
+            },
+
+            setBeforeRoute: function (beforeRoute) {
+                strictEqual(beforeRoute, leaveEvent.beforeRoute,
+                    "should set before route to leave event's before route");
+                return this;
+            },
+
+            setAfterRoute: function (afterRoute) {
+                strictEqual(afterRoute, leaveEvent.afterRoute,
+                    "should set after route to leave event's after route");
+                return this;
+            }
+        });
+
+        router.addMocks({
+            _pushRoutingEvent: function (hash, event) {
+                equal(hash, '#hello/world', "should pass hash to event pusher");
+                strictEqual(event, routingEvent, "should push route change event to queue");
+            },
+
+            _hashSetterProxy: function (hash) {
+                equal(hash, '#hello/world', "should set the URL hash");
+            }
+        });
+
+        router.onRouteLeave(leaveEvent);
 
         m$.RoutingEvent.removeMocks();
     });
