@@ -221,7 +221,7 @@ troop.amendPostponed(milkman, 'Route', function () {
     "use strict";
 
     // reacting to hash changes
-    document.addEventListener('hashchange', function () {
+    window.addEventListener('hashchange', function () {
         milkman.Router.create()
             .onHashChange();
     });
