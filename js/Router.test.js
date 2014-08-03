@@ -12,6 +12,13 @@
         }
     });
 
+    test("Route extractor", function () {
+        ok(m$.Router._extractHashFromUrl('http://foo.com/bar#baz')
+            .equals('baz'.toRoute()), "should extract route from URL");
+        ok(m$.Router._extractHashFromUrl('http://foo.com/bar')
+            .equals([].toRoute()), "should extract empty route from URL with no hash");
+    });
+
     test("Applying route change", function () {
         expect(2);
 
@@ -21,7 +28,7 @@
 
         routingEvent.addMocks({
             triggerSync: function (targetPath) {
-                strictEqual(targetPath, routingEvent.beforeRoute.eventPath, "should fire event on before path");
+                strictEqual(targetPath, routingEvent.afterRoute.eventPath, "should fire event on before path");
             }
         });
 
@@ -296,7 +303,7 @@
         m$.RoutingEvent.removeMocks();
     });
 
-    test("Hash change handler", function () {
+    test("Hash change handler when URL has hash", function () {
         var event = m$.routingEventSpace.spawnEvent('foo');
 
         router.addMocks({
@@ -318,6 +325,33 @@
         router.onHashChange();
     });
 
+    test("Hash change handler with no hash", function () {
+        expect(5);
+
+        var event = m$.routingEventSpace.spawnEvent('foo'),
+            hashChangeEvent = {
+                oldURL: 'http://foo.com#foo/bar',
+                newURL: 'http://foo.com#hello/world'
+            };
+
+        router.addMocks({
+            _shiftRoutingEvent: function () {
+                ok(true, "should get next event matching hash");
+                return undefined;
+            },
+
+            _applyRouteChange: function (routingEvent) {
+                ok(routingEvent.isA(m$.RoutingEvent), "should apply a routing event");
+                ok(routingEvent.beforeRoute.equals('foo/bar'.toRoute()), "should set before route to old hash");
+                ok(routingEvent.afterRoute.equals('hello/world'.toRoute()), "should set after route to new hash");
+                strictEqual(routingEvent.originalEvent, hashChangeEvent,
+                    "should set original event to DOM hash event");
+            }
+        });
+
+        router.onHashChange(hashChangeEvent);
+    });
+
     test("Global route-leave handler", function () {
         expect(1);
 
@@ -332,4 +366,20 @@
 
         m$.Router.removeMocks();
     });
+    //
+    //    test("Global route-change handler", function () {
+    //        expect(1);
+    //
+    //        function onRouteChange(event) {
+    //            ok(event.originalPath.equals('route>hello>world'.toPath()), "should capture route changes");
+    //        }
+    //
+    //        [].toRoute()
+    //            .subscribeTo(m$.Router.EVENT_ROUTE_CHANGE, onRouteChange);
+    //
+    //        router.navigateToRoute('hello/world'.toRoute());
+    //
+    //        [].toRoute()
+    //            .unsubscribeFrom(m$.Router.EVENT_ROUTE_CHANGE, onRouteChange);
+    //    });
 }());
