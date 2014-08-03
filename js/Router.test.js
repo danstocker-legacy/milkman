@@ -13,9 +13,9 @@
     });
 
     test("Route extractor", function () {
-        ok(m$.Router._extractHashFromUrl('http://foo.com/bar#baz')
+        ok(m$.Router._extractRouteFromUrl('http://foo.com/bar#baz')
             .equals('baz'.toRoute()), "should extract route from URL");
-        ok(m$.Router._extractHashFromUrl('http://foo.com/bar')
+        ok(m$.Router._extractRouteFromUrl('http://foo.com/bar')
             .equals([].toRoute()), "should extract empty route from URL with no hash");
     });
 
@@ -350,6 +350,30 @@
         });
 
         router.onHashChange(hashChangeEvent);
+    });
+
+    test("Document load handler", function () {
+        expect(5);
+
+        var event = m$.routingEventSpace.spawnEvent('foo'),
+            documentLoadEvent = {};
+
+        router.addMocks({
+            _hashGetterProxy: function () {
+                ok(true, "should fetch the current hash");
+                return '#foo/bar';
+            },
+
+            _applyRouteChange: function (routingEvent) {
+                ok(routingEvent.isA(m$.RoutingEvent), "should apply a routing event");
+                ok(routingEvent.beforeRoute.equals([].toRoute()), "should set before route to empty route");
+                ok(routingEvent.afterRoute.equals('foo/bar'.toRoute()), "should set after route to current hash");
+                strictEqual(routingEvent.originalEvent, documentLoadEvent,
+                    "should set original event to DOM hash event");
+            }
+        });
+
+        router.onDocumentLoad(documentLoadEvent);
     });
 
     test("Global route-leave handler", function () {

@@ -40,7 +40,7 @@ troop.postpone(milkman, 'Router', function () {
              * @returns {milkman.Route}
              * @private
              */
-            _extractHashFromUrl: function (url) {
+            _extractRouteFromUrl: function (url) {
                 return (url.split('#')[1] || []).toRoute();
             },
 
@@ -215,10 +215,23 @@ troop.postpone(milkman, 'Router', function () {
 
                 if (!routingEvent) {
                     routingEvent = milkman.routingEventSpace.spawnEvent(milkman.Router.EVENT_ROUTE_CHANGE)
-                        .setBeforeRoute(this._extractHashFromUrl(event.oldURL))
-                        .setAfterRoute(this._extractHashFromUrl(event.newURL))
+                        .setBeforeRoute(this._extractRouteFromUrl(event.oldURL))
+                        .setAfterRoute(this._extractRouteFromUrl(event.newURL))
                         .setOriginalEvent(event);
                 }
+
+                this._applyRouteChange(routingEvent);
+            },
+
+            /**
+             * When document finished loading.
+             * @param {Event} event
+             */
+            onDocumentLoad: function (event) {
+                var routingEvent = milkman.routingEventSpace.spawnEvent(milkman.Router.EVENT_ROUTE_CHANGE)
+                    .setBeforeRoute([].toRoute())
+                    .setAfterRoute(this._hashGetterProxy().toRouteFromHash())
+                    .setOriginalEvent(event);
 
                 this._applyRouteChange(routingEvent);
             }
@@ -239,13 +252,11 @@ troop.amendPostponed(milkman, 'Route', function () {
 
     // reacting to hash changes
     window.addEventListener('hashchange', function (event) {
-        milkman.Router.create()
-            .onHashChange(event);
+        milkman.Router.create().onHashChange(event);
     });
 
     // running hash change handler when document loads
-    document.addEventListener('DOMContentLoaded', function () {
-        milkman.Router.create()
-            .onHashChange();
+    document.addEventListener('DOMContentLoaded', function (event) {
+        milkman.Router.create().onDocumentLoad(event);
     }, false);
 }());
