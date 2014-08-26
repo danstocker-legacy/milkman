@@ -142,7 +142,7 @@
     test("Current route getter", function () {
         router.addMocks({
             _hashGetterProxy: function () {
-                return 'foo/bar';
+                return '#foo/bar';
             }
         });
 

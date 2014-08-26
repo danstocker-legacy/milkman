@@ -138,7 +138,7 @@ troop.postpone(milkman, 'Router', function () {
              * @returns {milkman.Route}
              */
             getCurrentRoute: function () {
-                return this._hashGetterProxy().toRoute();
+                return this._hashGetterProxy().toRouteFromHash();
             },
 
             /**
