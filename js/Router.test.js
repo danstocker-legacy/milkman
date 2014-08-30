@@ -366,7 +366,7 @@
 
             _applyRouteChange: function (routingEvent) {
                 ok(routingEvent.isA(m$.RoutingEvent), "should apply a routing event");
-                ok(routingEvent.beforeRoute.equals([].toRoute()), "should set before route to empty route");
+                equal(typeof routingEvent.beforeRoute, 'undefined', "should leave before route as undefined");
                 ok(routingEvent.afterRoute.equals('foo/bar'.toRoute()), "should set after route to current hash");
                 strictEqual(routingEvent.originalEvent, documentLoadEvent,
                     "should set original event to DOM hash event");

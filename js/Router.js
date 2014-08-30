@@ -229,7 +229,6 @@ troop.postpone(milkman, 'Router', function () {
              */
             onDocumentLoad: function (event) {
                 var routingEvent = milkman.routingEventSpace.spawnEvent(milkman.Router.EVENT_ROUTE_CHANGE)
-                    .setBeforeRoute([].toRoute())
                     .setAfterRoute(this._hashGetterProxy().toRouteFromHash())
                     .setOriginalEvent(event);
 
