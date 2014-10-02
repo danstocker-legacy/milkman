@@ -329,12 +329,13 @@
         expect(5);
 
         var event = m$.routingEventSpace.spawnEvent('foo'),
-            hashChangeEvent = {
-                oldURL: 'http://foo.com#foo/bar',
-                newURL: 'http://foo.com#hello/world'
-            };
+            hashChangeEvent = {};
 
         router.addMocks({
+            _hashGetterProxy: function () {
+                return '#hello/world';
+            },
+
             _shiftRoutingEvent: function () {
                 ok(true, "should get next event matching hash");
                 return undefined;
@@ -348,6 +349,8 @@
                     "should set original event to DOM hash event");
             }
         });
+
+        m$.Router.create().currentRoute = '#foo/bar'.toRouteFromHash();
 
         router.onHashChange(hashChangeEvent);
     });

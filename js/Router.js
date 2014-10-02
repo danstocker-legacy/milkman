@@ -211,12 +211,13 @@ troop.postpone(milkman, 'Router', function () {
              * @param {Event} event
              */
             onHashChange: function (event) {
-                var routingEvent = this._shiftRoutingEvent(this._hashGetterProxy());
+                var newHash = this._hashGetterProxy(),
+                    routingEvent = this._shiftRoutingEvent(newHash);
 
                 if (!routingEvent) {
                     routingEvent = milkman.routingEventSpace.spawnEvent(milkman.Router.EVENT_ROUTE_CHANGE)
-                        .setBeforeRoute(this._extractRouteFromUrl(event.oldURL))
-                        .setAfterRoute(this._extractRouteFromUrl(event.newURL))
+                        .setBeforeRoute(this.currentRoute)
+                        .setAfterRoute(newHash.toRouteFromHash())
                         .setOriginalEvent(event);
                 }
 
