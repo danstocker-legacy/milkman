@@ -200,6 +200,24 @@
         m$.RoutingEvent.removeMocks();
     });
 
+    test("Navigation to the same route", function () {
+        expect(0);
+
+        var route = 'foo/bar'.toRoute();
+
+        router.currentRoute = 'foo/bar'.toRoute();
+
+        m$.RoutingEvent.addMocks({
+            triggerSync: function () {
+                ok(true, "should NOT trigger event");
+            }
+        });
+
+        router.navigateToRoute(route);
+
+        m$.RoutingEvent.removeMocks();
+    });
+
     test("Silent navigation", function () {
         expect(7);
 
@@ -247,6 +265,22 @@
         strictEqual(router.navigateToRouteSilent(route), router, "should be chainable");
 
         m$.RoutingEvent.removeMocks();
+    });
+
+    test("Silent navigation to the same route", function () {
+        expect(0);
+
+        var route = 'foo/bar'.toRoute();
+
+        router.currentRoute = 'foo/bar'.toRoute();
+
+        router.addMocks({
+            _applyRouteChange: function () {
+                ok(true, "should NOT apply route change");
+            }
+        });
+
+        router.navigateToRouteSilent(route);
     });
 
     test("Route leave handler", function () {

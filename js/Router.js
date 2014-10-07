@@ -150,12 +150,14 @@ troop.postpone(milkman, 'Router', function () {
             navigateToRoute: function (route) {
                 dessert.isRoute(route, "Invalid route path");
 
-                milkman.routingEventSpace.spawnEvent(this.EVENT_ROUTE_LEAVE)
-                    .setOriginalEvent(route.nextOriginalEvent)
-                    .setPayload(route.nextPayload)
-                    .setBeforeRoute(this.currentRoute)
-                    .setAfterRoute(route)
-                    .triggerSync(route.eventPath);
+                if (!route.equals(this.currentRoute)) {
+                    milkman.routingEventSpace.spawnEvent(this.EVENT_ROUTE_LEAVE)
+                        .setOriginalEvent(route.nextOriginalEvent)
+                        .setPayload(route.nextPayload)
+                        .setBeforeRoute(this.currentRoute)
+                        .setAfterRoute(route)
+                        .triggerSync(route.eventPath);
+                }
 
                 return this;
             },
@@ -169,13 +171,17 @@ troop.postpone(milkman, 'Router', function () {
             navigateToRouteSilent: function (route) {
                 dessert.isRoute(route, "Invalid route path");
 
-                var routingEvent = milkman.routingEventSpace.spawnEvent(this.EVENT_ROUTE_LEAVE)
-                    .setOriginalEvent(route.nextOriginalEvent)
-                    .setPayload(route.nextPayload)
-                    .setBeforeRoute(this.currentRoute)
-                    .setAfterRoute(route);
+                var routingEvent;
 
-                this._applyRouteChange(routingEvent);
+                if (!route.equals(this.currentRoute)) {
+                    routingEvent = milkman.routingEventSpace.spawnEvent(this.EVENT_ROUTE_LEAVE)
+                        .setOriginalEvent(route.nextOriginalEvent)
+                        .setPayload(route.nextPayload)
+                        .setBeforeRoute(this.currentRoute)
+                        .setAfterRoute(route);
+
+                    this._applyRouteChange(routingEvent);
+                }
 
                 return this;
             },
