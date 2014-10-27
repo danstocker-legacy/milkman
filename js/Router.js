@@ -1,4 +1,4 @@
-/*global dessert, troop, sntls, evan, jQuery, window, milkman */
+/*global console, dessert, troop, sntls, evan, jQuery, window, milkman */
 troop.postpone(milkman, 'Router', function () {
     "use strict";
 
@@ -228,6 +228,20 @@ troop.amendPostponed(milkman, 'Route', function () {
         .subscribeTo(milkman.Router.EVENT_ROUTE_LEAVE, function (/**milkman.RoutingEvent*/event) {
             milkman.Router.create().onRouteLeave(event);
         });
+});
+
+troop.amendPostponed(milkman, 'logRoutingEvents', function () {
+    "use strict";
+
+    milkman.logRoutingEvents = function () {
+        [].toRoute()
+            .subscribeTo(milkman.Router.EVENT_ROUTE_LEAVE, function (event) {
+                console.info("route left", event.beforeRoute.toString(), event);
+            })
+            .subscribeTo(milkman.Router.EVENT_ROUTE_CHANGE, function (event) {
+                console.info("route changed", event.afterRoute.toString(), event);
+            });
+    };
 });
 
 (function () {
