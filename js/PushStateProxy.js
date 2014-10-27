@@ -72,11 +72,14 @@ troop.postpone(milkman, 'PushStateProxy', function () {
              * @returns {milkman.PushStateProxy}
              */
             setRoute: function (route) {
+                dessert.isRoute(route, "Invalid route");
+
                 var currentRoute = this.getRoute();
                 if (!currentRoute.equals(route)) {
                     this._pushStateProxy(route.routePath, '', '/' + route.toString());
                     this._triggerFauxPopState();
                 }
+                
                 return this;
             },
 

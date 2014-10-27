@@ -49,6 +49,7 @@ troop.postpone(milkman, 'HashProxy', function () {
              * @returns {milkman.HashProxy}
              */
             setRoute: function (route) {
+                dessert.isRoute(route, "Invalid route");
                 var hash = '#' + route.toString();
                 this._hashSetterProxy(hash);
                 return this;
