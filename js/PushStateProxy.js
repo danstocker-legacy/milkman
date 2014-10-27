@@ -33,6 +33,30 @@ troop.postpone(milkman, 'PushStateProxy', function () {
              */
             _pushStateProxy: function (state, title, url) {
                 return window.history.pushState(state, title, url);
+            },
+
+            /**
+             * @param {string} eventName
+             * @returns {Event}
+             * @private
+             */
+            _createEventProxy: function (eventName) {
+                return document.createEvent(eventName);
+            },
+
+            /**
+             * @param {Event} event
+             * @private
+             */
+            _dispatchEventProxy: function (event) {
+                document.dispatchEvent(event);
+            },
+
+            /** @private */
+            _triggerFauxPopState: function () {
+                var customEvent = this._createEventProxy('CustomEvent');
+                customEvent.initCustomEvent('faux-popstate', true, true, {});
+                this._dispatchEventProxy(customEvent);
             }
         })
         .addMethods(/** @lends milkman.PushStateProxy# */{
@@ -50,14 +74,14 @@ troop.postpone(milkman, 'PushStateProxy', function () {
             setRoute: function (route) {
                 var currentRoute = this.getRoute();
                 if (!currentRoute.equals(route)) {
-                    this._pushStateProxy(null, '', '/' + route.toString());
+                    this._pushStateProxy(route.routePath, '', '/' + route.toString());
+                    this._triggerFauxPopState();
                 }
                 return this;
             },
 
             /** @param {Event} event */
             onRouteChange: function (event) {
-                console.log("popstate", event);
                 milkman.Router.create().onRouteChange(event);
             }
         });
@@ -76,7 +100,13 @@ troop.amendPostponed(milkman, 'LocationProxy', function () {
     "use strict";
 
     // reacting to hash changes
-    window.addEventListener('onpopstate', function (event) {
+    window.addEventListener('popstate', function (event) {
+        if (milkman.usePushState) {
+            milkman.LocationProxy.create().onRouteChange(event);
+        }
+    });
+
+    document.addEventListener('faux-popstate', function () {
         if (milkman.usePushState) {
             milkman.LocationProxy.create().onRouteChange(event);
         }
