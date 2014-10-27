@@ -76,8 +76,7 @@ troop.amendPostponed(milkman, 'LocationProxy', function () {
     // reacting to hash changes
     window.addEventListener('hashchange', function (event) {
         if (!milkman.usePushState) {
-            milkman.HashProxy.create()
-                .onRouteChange(event);
+            milkman.LocationProxy.create().onRouteChange(event);
         }
     });
 }());

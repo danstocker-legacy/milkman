@@ -3,7 +3,9 @@
  */
 /*global require */
 /** @namespace */
-var milkman = {},
+var milkman = {
+        usePushState: false
+    },
     m$ = milkman,
     dessert = dessert || require('dessert'),
     troop = troop || require('troop'),

@@ -10,6 +10,7 @@ module.exports = function (grunt) {
             'js/RoutingEvent.js',
             'js/LocationProxy.js',
             'js/HashProxy.js',
+            'js/PushStateProxy.js',
             'js/Router.js',
             'js/exports.js'
         ],
