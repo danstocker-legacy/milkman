@@ -8,6 +8,8 @@ module.exports = function (grunt) {
             'js/routingEventSpace.js',
             'js/Route.js',
             'js/RoutingEvent.js',
+            'js/LocationProxy.js',
+            'js/HashProxy.js',
             'js/Router.js',
             'js/exports.js'
         ],

@@ -33,12 +33,6 @@
         ok(route.routePath.equals('foo>bar'.toPath()), "should set route path property based on string");
     });
 
-    test("Conversion from URL hash", function () {
-        var route = '#foo/bar'.toRouteFromHash();
-        ok(route.isA(m$.Route), "should return a Route instance");
-        ok(route.routePath.equals('foo>bar'.toPath()), "should set route path property based on hash");
-    });
-
     test("Conversion from Array", function () {
         var route = ['foo', 'bar'].toRoute();
         ok(route.isA(m$.Route), "should return a Route instance");

@@ -134,20 +134,6 @@ troop.amendPostponed(sntls, 'Path', function () {
              */
             toRoute: function () {
                 return milkman.Route.create(this.split('/').toPath());
-            },
-
-            /**
-             * Creates a new Route instance based on the current string interpreted as a hash.
-             * @returns {milkman.Route}
-             */
-            toRouteFromHash: function () {
-                var hash = this.split('#')[1];
-
-                var asArray = hash ?
-                    hash.split('/') :
-                    [];
-
-                return milkman.Route.create(asArray.toPath());
             }
         },
         false, false, false

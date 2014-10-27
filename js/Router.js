@@ -34,33 +34,6 @@ troop.postpone(milkman, 'Router', function () {
             EVENT_ROUTE_LEAVE: 'route-leave'
         })
         .addPrivateMethods(/** @lends milkman.Router */{
-            /**
-             * Extracts route from URL based on its hash component.
-             * @param {string} url
-             * @returns {milkman.Route}
-             * @private
-             */
-            _extractRouteFromUrl: function (url) {
-                return (url.split('#')[1] || []).toRoute();
-            },
-
-            /**
-             * Effectuates the specified hash in the URL.
-             * @param {string} hash Valid hash expression ("#foo")
-             * @private
-             */
-            _hashSetterProxy: function (hash) {
-                window.location.hash = hash;
-            },
-
-            /**
-             * Retrieves the current hash from the URL.
-             * @returns {string}
-             * @private
-             */
-            _hashGetterProxy: function () {
-                return window.location.hash;
-            },
 
             /**
              * Applies route change as specified by the routing event.
@@ -82,18 +55,19 @@ troop.postpone(milkman, 'Router', function () {
             },
 
             /**
-             * Adds routing event to the buffer for retrieval on hash change matching the specified hash.
-             * @param {string} hash
+             * Adds routing event to the buffer for retrieval on route change matching the specified route.
+             * @param {milkman.Route} route
              * @param {milkman.RoutingEvent} routingEvent
              * @private
              */
-            _pushRoutingEvent: function (hash, routingEvent) {
+            _pushRoutingEvent: function (route, routingEvent) {
                 var nextRoutingEvents = this._nextRoutingEvents,
-                    queue = nextRoutingEvents.getItem(hash);
+                    serializedRoute = route.toString(),
+                    queue = nextRoutingEvents.getItem(serializedRoute);
 
                 if (!queue) {
                     queue = [];
-                    nextRoutingEvents.setItem(hash, queue);
+                    nextRoutingEvents.setItem(serializedRoute, queue);
                 }
 
                 queue.push(routingEvent);
@@ -101,12 +75,12 @@ troop.postpone(milkman, 'Router', function () {
 
             /**
              * Retrieves next available routing event associated with the specified hash.
-             * @param {string} hash
+             * @param {milkman.Route} route
              * @returns {*}
              * @private
              */
-            _shiftRoutingEvent: function (hash) {
-                var queue = this._nextRoutingEvents.getItem(hash);
+            _shiftRoutingEvent: function (route) {
+                var queue = this._nextRoutingEvents.getItem(route.toString());
 
                 if (queue && queue.length) {
                     return queue.shift();
@@ -124,6 +98,9 @@ troop.postpone(milkman, 'Router', function () {
                  */
                 this.currentRoute = [].toRoute();
 
+                /** @type {milkman.LocationProxy} */
+                this.locationProxy = milkman.LocationProxy.create();
+
                 /**
                  * Stores routing events to be triggered after hash change.
                  * (With optional custom payload.)
@@ -138,7 +115,7 @@ troop.postpone(milkman, 'Router', function () {
              * @returns {milkman.Route}
              */
             getCurrentRoute: function () {
-                return this._hashGetterProxy().toRouteFromHash();
+                return this.locationProxy.getRoute();
             },
 
             /**
@@ -197,7 +174,7 @@ troop.postpone(milkman, 'Router', function () {
 
                 // resuming default behavior
                 // triggering route change
-                var hash = event.afterRoute.toHash(),
+                var route = event.afterRoute,
                     routeChangeEvent = milkman.routingEventSpace.spawnEvent(milkman.Router.EVENT_ROUTE_CHANGE)
                         .setBeforeRoute(event.beforeRoute)
                         .setAfterRoute(event.afterRoute)
@@ -206,24 +183,24 @@ troop.postpone(milkman, 'Router', function () {
 
                 // pushing routing event containing custom information about routing
                 // after hash change this will be taken
-                this._pushRoutingEvent(hash, routeChangeEvent);
+                this._pushRoutingEvent(route, routeChangeEvent);
 
                 // modifying browser hash
-                this._hashSetterProxy(hash);
+                this.locationProxy.setRoute(route);
             },
 
             /**
              * When the browser hash changes.
              * @param {Event} event
              */
-            onHashChange: function (event) {
-                var newHash = this._hashGetterProxy(),
-                    routingEvent = this._shiftRoutingEvent(newHash);
+            onRouteChange: function (event) {
+                var newRoute = this.locationProxy.getRoute(),
+                    routingEvent = this._shiftRoutingEvent(newRoute);
 
                 if (!routingEvent) {
                     routingEvent = milkman.routingEventSpace.spawnEvent(milkman.Router.EVENT_ROUTE_CHANGE)
                         .setBeforeRoute(this.currentRoute)
-                        .setAfterRoute(newHash.toRouteFromHash())
+                        .setAfterRoute(newRoute)
                         .setOriginalEvent(event);
                 }
 
@@ -236,7 +213,7 @@ troop.postpone(milkman, 'Router', function () {
              */
             onDocumentLoad: function (event) {
                 var routingEvent = milkman.routingEventSpace.spawnEvent(milkman.Router.EVENT_ROUTE_CHANGE)
-                    .setAfterRoute(this._hashGetterProxy().toRouteFromHash())
+                    .setAfterRoute(this.locationProxy.getRoute())
                     .setOriginalEvent(event);
 
                 this._applyRouteChange(routingEvent);
@@ -255,11 +232,6 @@ troop.amendPostponed(milkman, 'Route', function () {
 
 (function () {
     "use strict";
-
-    // reacting to hash changes
-    window.addEventListener('hashchange', function (event) {
-        milkman.Router.create().onHashChange(event);
-    });
 
     // running hash change handler when document loads
     document.addEventListener('DOMContentLoaded', function (event) {

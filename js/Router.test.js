@@ -12,13 +12,6 @@
         }
     });
 
-    test("Route extractor", function () {
-        ok(m$.Router._extractRouteFromUrl('http://foo.com/bar#baz')
-            .equals('baz'.toRoute()), "should extract route from URL");
-        ok(m$.Router._extractRouteFromUrl('http://foo.com/bar')
-            .equals([].toRoute()), "should extract empty route from URL with no hash");
-    });
-
     test("Applying route change", function () {
         expect(2);
 
@@ -140,16 +133,19 @@
     });
 
     test("Current route getter", function () {
-        router.addMocks({
-            _hashGetterProxy: function () {
-                return '#foo/bar';
+        m$.HashProxy.addMocks({
+            getRoute: function () {
+                ok(true, "should fetch route from proxy");
+                return 'foo/bar'.toRoute();
             }
         });
 
         var route = router.getCurrentRoute();
 
+        m$.HashProxy.removeMocks();
+
         ok(route.isA(m$.Route), "should return a Route instance");
-        ok(route.routePath.equals('foo>bar'.toPath()), "should set route path to current hash");
+        ok(route.routePath.equals('foo>bar'.toPath()), "should set route path to current route's path");
     });
 
     test("Navigation", function () {
@@ -321,33 +317,38 @@
             }
         });
 
-        router.addMocks({
-            _pushRoutingEvent: function (hash, event) {
-                equal(hash, '#hello/world', "should pass hash to event pusher");
-                strictEqual(event, routingEvent, "should push route change event to queue");
-            },
+        m$.HashProxy.addMocks({
+            setRoute: function (route) {
+                equal(route.toString(), 'hello/world', "should set the current route");
+            }
+        });
 
-            _hashSetterProxy: function (hash) {
-                equal(hash, '#hello/world', "should set the URL hash");
+        router.addMocks({
+            _pushRoutingEvent: function (route, event) {
+                equal(route.toString(), 'hello/world', "should pass right route to event pusher");
+                strictEqual(event, routingEvent, "should push route change event to queue");
             }
         });
 
         router.onRouteLeave(leaveEvent);
 
         m$.RoutingEvent.removeMocks();
+        m$.HashProxy.removeMocks();
     });
 
-    test("Hash change handler when URL has hash", function () {
+    test("Route change handler when URL has hash", function () {
         var event = m$.routingEventSpace.spawnEvent('foo');
 
-        router.addMocks({
-            _hashGetterProxy: function () {
-                ok(true, "should fetch URL hash");
-                return '#foo/bar';
-            },
+        m$.HashProxy.addMocks({
+            getRoute: function () {
+                ok(true, "should get route from proxy");
+                return 'foo/bar'.toRoute();
+            }
+        });
 
-            _shiftRoutingEvent: function (hash) {
-                equal(hash, '#foo/bar', "should get next event matching hash");
+        router.addMocks({
+            _shiftRoutingEvent: function (route) {
+                equal(route.toString(), 'foo/bar', "should get next event matching route");
                 return event;
             },
 
@@ -356,7 +357,9 @@
             }
         });
 
-        router.onHashChange();
+        router.onRouteChange();
+
+        m$.HashProxy.removeMocks();
     });
 
     test("Hash change handler with no hash", function () {
@@ -365,11 +368,13 @@
         var event = m$.routingEventSpace.spawnEvent('foo'),
             hashChangeEvent = {};
 
-        router.addMocks({
-            _hashGetterProxy: function () {
-                return '#hello/world';
-            },
+        m$.HashProxy.addMocks({
+            getRoute: function () {
+                return 'hello/world'.toRoute();
+            }
+        });
 
+        router.addMocks({
             _shiftRoutingEvent: function () {
                 ok(true, "should get next event matching hash");
                 return undefined;
@@ -384,9 +389,11 @@
             }
         });
 
-        m$.Router.create().currentRoute = '#foo/bar'.toRouteFromHash();
+        m$.Router.create().currentRoute = 'foo/bar'.toRoute();
 
-        router.onHashChange(hashChangeEvent);
+        router.onRouteChange(hashChangeEvent);
+
+        m$.HashProxy.removeMocks();
     });
 
     test("Document load handler", function () {
@@ -395,12 +402,14 @@
         var event = m$.routingEventSpace.spawnEvent('foo'),
             documentLoadEvent = {};
 
-        router.addMocks({
-            _hashGetterProxy: function () {
-                ok(true, "should fetch the current hash");
-                return '#foo/bar';
-            },
+        m$.HashProxy.addMocks({
+            getRoute: function () {
+                ok(true, "should fetch the current route");
+                return 'foo/bar'.toRoute();
+            }
+        });
 
+        router.addMocks({
             _applyRouteChange: function (routingEvent) {
                 ok(routingEvent.isA(m$.RoutingEvent), "should apply a routing event");
                 equal(typeof routingEvent.beforeRoute, 'undefined', "should leave before route as undefined");
@@ -411,6 +420,8 @@
         });
 
         router.onDocumentLoad(documentLoadEvent);
+
+        m$.HashProxy.removeMocks();
     });
 
     test("Global route-leave handler", function () {
