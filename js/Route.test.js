@@ -52,11 +52,6 @@
         equal(route.toString(), 'foo/bar', "should return route in slash notation");
     });
 
-    test("Conversion to URL hash", function () {
-        var route = 'foo/bar'.toRoute();
-        equal(route.toHash(), '#foo/bar', "should return hash formatted string");
-    });
-
     test("Equality tester", function () {
         ok(!'foo/bar'.toRoute().equals(undefined), "should return false for no argument");
         ok(!'foo/bar'.toRoute().equals('hello/world'.toRoute()), "should return false for different route");

@@ -85,14 +85,6 @@ troop.postpone(milkman, 'Route', function () {
             /** @returns {string} */
             toString: function () {
                 return this.routePath.asArray.join('/');
-            },
-
-            /**
-             * Converts path instance to hash string.
-             * @returns {string}
-             */
-            toHash: function () {
-                return '#' + this;
             }
         });
 });
