@@ -1,10 +1,11 @@
 {
     "name"           : "milkman",
-    "version"        : "0.1.6",
+    "version"        : "0.2.0",
     "description"    : "Routing framework",
     "keywords"       : [
         "routing",
-        "evented"
+        "evented",
+        "hash", "pushstate", "history"
     ],
     "author"         : "Dan Stocker <dan@kwaia.com>",
     "copyright"      : "Copyright (c) 2014 Dan Stocker",
@@ -13,7 +14,7 @@
         "dessert": "~0.3.2",
         "troop"  : "~0.7.2",
         "sntls"  : "~0.17.0",
-        "evan"   : "~0.4.1"
+        "evan"   : "~0.4.2"
     },
     "devDependencies": {
         "phil"                : "~0.2.3",
