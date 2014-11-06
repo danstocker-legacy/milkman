@@ -109,7 +109,7 @@ troop.amendPostponed(milkman, 'LocationProxy', function () {
         }
     });
 
-    document.addEventListener('faux-popstate', function () {
+    document.addEventListener('faux-popstate', function (event) {
         if (milkman.usePushState) {
             milkman.LocationProxy.create().onRouteChange(event);
         }
