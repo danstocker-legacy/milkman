@@ -230,7 +230,7 @@ troop.amendPostponed(milkman, 'Route', function () {
         });
 });
 
-troop.amendPostponed(milkman, 'logRoutingEvents', function () {
+troop.postpone(milkman, 'logRoutingEvents', function () {
     "use strict";
 
     milkman.logRoutingEvents = function () {
