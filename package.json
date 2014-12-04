@@ -1,6 +1,6 @@
 {
     "name"           : "milkman",
-    "version"        : "0.2.2",
+    "version"        : "0.2.3",
     "description"    : "Routing framework",
     "keywords"       : [
         "routing",
@@ -10,9 +10,13 @@
     "author"         : "Dan Stocker <dan@kwaia.com>",
     "copyright"      : "Copyright (c) 2014 Dan Stocker",
     "license"        : "MIT",
+    "repository"     : {
+        "type": "git",
+        "url" : "git://github.com/danstocker/milkman.git"
+    },
     "dependencies"   : {
         "dessert": "~0.3.2",
-        "troop"  : "~0.7.2",
+        "troop"  : "~0.7.2 || ~0.8.0",
         "sntls"  : "~0.17.0",
         "evan"   : "~0.4.2"
     },
