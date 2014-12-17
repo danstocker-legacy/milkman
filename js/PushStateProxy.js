@@ -79,7 +79,7 @@ troop.postpone(milkman, 'PushStateProxy', function () {
                     this._pushStateProxy(route.routePath, '', '/' + route.toString());
                     this._triggerFauxPopState();
                 }
-                
+
                 return this;
             },
 
@@ -102,16 +102,20 @@ troop.amendPostponed(milkman, 'LocationProxy', function () {
 (function () {
     "use strict";
 
-    // reacting to hash changes
-    window.addEventListener('popstate', function (event) {
-        if (milkman.usePushState) {
-            milkman.LocationProxy.create().onRouteChange(event);
-        }
-    });
+    if (window) {
+        // reacting to hash changes
+        window.addEventListener('popstate', function (event) {
+            if (milkman.usePushState) {
+                milkman.LocationProxy.create().onRouteChange(event);
+            }
+        });
+    }
 
-    document.addEventListener('faux-popstate', function (event) {
-        if (milkman.usePushState) {
-            milkman.LocationProxy.create().onRouteChange(event);
-        }
-    });
+    if (document) {
+        document.addEventListener('faux-popstate', function (event) {
+            if (milkman.usePushState) {
+                milkman.LocationProxy.create().onRouteChange(event);
+            }
+        });
+    }
 }());

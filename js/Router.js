@@ -247,8 +247,10 @@ troop.postpone(milkman, 'logRoutingEvents', function () {
 (function () {
     "use strict";
 
-    // running hash change handler when document loads
-    document.addEventListener('DOMContentLoaded', function (event) {
-        milkman.Router.create().onDocumentLoad(event);
-    }, false);
+    if (document) {
+        // running hash change handler when document loads
+        document.addEventListener('DOMContentLoaded', function (event) {
+            milkman.Router.create().onDocumentLoad(event);
+        }, false);
+    }
 }());

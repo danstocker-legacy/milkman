@@ -74,10 +74,12 @@ troop.amendPostponed(milkman, 'LocationProxy', function () {
 (function () {
     "use strict";
 
-    // reacting to hash changes
-    window.addEventListener('hashchange', function (event) {
-        if (!milkman.usePushState) {
-            milkman.LocationProxy.create().onRouteChange(event);
-        }
-    });
+    if (window) {
+        // reacting to hash changes
+        window.addEventListener('hashchange', function (event) {
+            if (!milkman.usePushState) {
+                milkman.LocationProxy.create().onRouteChange(event);
+            }
+        });
+    }
 }());
