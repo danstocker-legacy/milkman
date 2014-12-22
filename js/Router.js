@@ -151,7 +151,7 @@ troop.postpone(milkman, 'Router', function () {
                 var routingEvent;
 
                 if (!route.equals(this.currentRoute)) {
-                    routingEvent = milkman.routingEventSpace.spawnEvent(this.EVENT_ROUTE_LEAVE)
+                    routingEvent = milkman.routingEventSpace.spawnEvent(this.EVENT_ROUTE_CHANGE)
                         .setOriginalEvent(route.nextOriginalEvent)
                         .setPayload(route.nextPayload)
                         .setBeforeRoute(this.currentRoute)

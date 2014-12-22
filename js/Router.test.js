@@ -228,7 +228,7 @@
             setOriginalEvent: function (originalEvent) {
                 routingEvent = this;
 
-                equal(this.eventName, m$.Router.EVENT_ROUTE_LEAVE, "should spawn a route-leave event");
+                equal(this.eventName, m$.Router.EVENT_ROUTE_CHANGE, "should spawn a route-leave event");
                 strictEqual(originalEvent, route.nextOriginalEvent,
                     "should set original event to next original event stored on route");
                 return this;
