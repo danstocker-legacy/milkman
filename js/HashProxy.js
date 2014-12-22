@@ -67,7 +67,7 @@ troop.amendPostponed(milkman, 'LocationProxy', function () {
 
     milkman.LocationProxy
         .addSurrogate(milkman, 'HashProxy', function () {
-            return !milkman.usePushState;
+            return window && !milkman.usePushState;
         });
 });
 

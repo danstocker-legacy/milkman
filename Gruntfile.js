@@ -11,6 +11,7 @@ module.exports = function (grunt) {
             'js/LocationProxy.js',
             'js/HashProxy.js',
             'js/PushStateProxy.js',
+            'js/SilentProxy.js',
             'js/Router.js',
             'js/exports.js'
         ],
