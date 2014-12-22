@@ -176,10 +176,10 @@ troop.postpone(milkman, 'Router', function () {
                 // triggering route change
                 var route = event.afterRoute,
                     routeChangeEvent = milkman.routingEventSpace.spawnEvent(milkman.Router.EVENT_ROUTE_CHANGE)
-                        .setBeforeRoute(event.beforeRoute)
-                        .setAfterRoute(event.afterRoute)
                         .setOriginalEvent(event)
-                        .setPayload(event.payload);
+                        .setPayload(event.payload)
+                        .setBeforeRoute(event.beforeRoute)
+                        .setAfterRoute(event.afterRoute);
 
                 // pushing routing event containing custom information about routing
                 // after hash change this will be taken
