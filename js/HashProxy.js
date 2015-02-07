@@ -6,12 +6,16 @@ troop.postpone(milkman, 'HashProxy', function () {
         self = base.extend();
 
     /**
+     * Creates a HashProxy instance.
+     * You may create a HashProxy instance by instantiating LocationProxy under a browser environment,
+     * and when the config variable milkman.usePushState is set to false (default).
      * @name milkman.HashProxy.create
      * @function
      * @returns {milkman.HashProxy}
      */
 
     /**
+     * Implements low-level routing for URL hash-based applications.
      * @class
      * @extends milkman.LocationProxy
      */
@@ -36,7 +40,10 @@ troop.postpone(milkman, 'HashProxy', function () {
             }
         })
         .addMethods(/** @lends milkman.HashProxy# */{
-            /** @returns {milkman.Route} */
+            /**
+             * Fetches the current application route based on URL hash.
+             * @returns {milkman.Route}
+             */
             getRoute: function () {
                 var hash = this._hashGetterProxy(),
                     path = hash.substr(1);
@@ -45,6 +52,7 @@ troop.postpone(milkman, 'HashProxy', function () {
             },
 
             /**
+             * Sets the current application state via the URL hash.
              * @param {milkman.Route} route
              * @returns {milkman.HashProxy}
              */
@@ -55,7 +63,10 @@ troop.postpone(milkman, 'HashProxy', function () {
                 return this;
             },
 
-            /** @param {Event} event */
+            /**
+             * @param {Event} event
+             * @ignore
+             */
             onRouteChange: function (event) {
                 milkman.Router.create().onRouteChange(event);
             }

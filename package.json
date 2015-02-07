@@ -1,6 +1,6 @@
 {
     "name"           : "milkman",
-    "version"        : "0.2.8",
+    "version"        : "0.2.9",
     "description"    : "Routing framework",
     "keywords"       : [
         "routing",
@@ -17,7 +17,7 @@
     "dependencies"   : {
         "dessert": "~0.3.2",
         "troop"  : "~0.8.0",
-        "sntls"  : "~0.18.0",
+        "sntls"  : "~0.18.0 || ~0.19.0",
         "evan"   : "~0.5.0"
     },
     "devDependencies": {

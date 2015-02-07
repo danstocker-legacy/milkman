@@ -6,6 +6,9 @@ troop.postpone(milkman, 'SilentProxy', function () {
         self = base.extend();
 
     /**
+     * Creates a SilentProxy instance.
+     * You may create a SilentProxy instance by instantiating LocationProxy,
+     * in an environment that has no window global object (eg. node).
      * @name milkman.SilentProxy.create
      * @function
      * @returns {milkman.SilentProxy}
@@ -18,16 +21,23 @@ troop.postpone(milkman, 'SilentProxy', function () {
      */
     milkman.SilentProxy = self
         .addPublic(/** @lends milkman.SilentProxy */{
-            /** @type {milkman.Route} */
+            /**
+             * Stores the current (fake) application route.
+             * @type {milkman.Route}
+             */
             currentRoute: undefined
         })
         .addMethods(/** @lends milkman.SilentProxy# */{
-            /** @returns {milkman.Route} */
+            /**
+             * Retrieves the current (fake) application route.
+             * @returns {milkman.Route}
+             */
             getRoute: function () {
                 return self.currentRoute;
             },
 
             /**
+             * Sets the current (fake) application route.
              * @param {milkman.Route} route
              * @returns {milkman.SilentProxy}
              */

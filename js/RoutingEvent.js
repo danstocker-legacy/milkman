@@ -6,6 +6,8 @@ troop.postpone(milkman, 'RoutingEvent', function () {
         self = base.extend();
 
     /**
+     * Creates a RoutingEvent instance. A RoutingEvent will be created when Event is instantiated,
+     * passing milkman.eventSpace as the event space.
      * @name milkman.RoutingEvent.create
      * @function
      * @param {string} eventName Event name
@@ -14,6 +16,8 @@ troop.postpone(milkman, 'RoutingEvent', function () {
      */
 
     /**
+     * Represents an event traversing the routing event space.
+     * Carries information about the route(s) involved in the event.
      * @class
      * @extends evan.Event
      */

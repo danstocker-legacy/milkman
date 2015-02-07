@@ -3,14 +3,16 @@ troop.postpone(milkman, 'Router', function () {
     "use strict";
 
     /**
+     * Creates or returns the only Router instance that exists in the application.
      * @name milkman.Router.create
      * @function
      * @returns {milkman.Router}
      */
 
     /**
-     * Deals with application routing according to URL hash changes.
-     * Triggers routing events in the global event space.
+     * Deals with application routing according to changes in either URL hash, or location pushstate.
+     * Triggers routing events in the global routing event space.
+     * Singleton.
      * @class
      * @extends troop.Base
      */
@@ -34,7 +36,6 @@ troop.postpone(milkman, 'Router', function () {
             EVENT_ROUTE_LEAVE: 'route-leave'
         })
         .addPrivateMethods(/** @lends milkman.Router */{
-
             /**
              * Applies route change as specified by the routing event.
              * @param {milkman.RoutingEvent} routingEvent
@@ -164,8 +165,8 @@ troop.postpone(milkman, 'Router', function () {
             },
 
             /**
-             * When route leave was detected.
              * @param {milkman.RoutingEvent} event
+             * @ignore
              */
             onRouteLeave: function (event) {
                 if (event.defaultPrevented) {
@@ -190,8 +191,8 @@ troop.postpone(milkman, 'Router', function () {
             },
 
             /**
-             * When the browser hash changes.
              * @param {Event} event
+             * @ignore
              */
             onRouteChange: function (event) {
                 var newRoute = this.locationProxy.getRoute(),
@@ -208,8 +209,8 @@ troop.postpone(milkman, 'Router', function () {
             },
 
             /**
-             * When document finished loading.
              * @param {Event} event
+             * @ignore
              */
             onDocumentLoad: function (event) {
                 var routingEvent = milkman.routingEventSpace.spawnEvent(milkman.Router.EVENT_ROUTE_CHANGE)

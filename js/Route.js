@@ -6,6 +6,9 @@ troop.postpone(milkman, 'Route', function () {
         self = base.extend();
 
     /**
+     * Creates a Route instance.
+     * You may create route instances by conversion from string, array, and sntls.Path instances
+     * by calling '.toRoute()' on them.
      * @name milkman.Route.create
      * @function
      * @param {sntls.Path} routePath
@@ -13,6 +16,9 @@ troop.postpone(milkman, 'Route', function () {
      */
 
     /**
+     * Describes an application route, which reflects the current state of the application.
+     * The same route should generally yield the same application state when applied via the routing
+     * mechanism.
      * @class
      * @extends troop.Base
      * @extends evan.Evented
@@ -82,7 +88,10 @@ troop.postpone(milkman, 'Route', function () {
                 return this;
             },
 
-            /** @returns {string} */
+            /**
+             * @returns {string}
+             * @ignore
+             */
             toString: function () {
                 return this.routePath.asArray.join('/');
             }
@@ -107,10 +116,12 @@ troop.amendPostponed(sntls, 'Path', function () {
     "use strict";
 
     dessert.addTypes(/** @lends dessert */{
+        /** @param {milkman.Route} expr */
         isRoute: function (expr) {
             return milkman.Route.isBaseOf(expr);
         },
 
+        /** @param {milkman.Route} [expr] */
         isRouteOptional: function (expr) {
             return typeof expr === 'undefined' ||
                    milkman.Route.isBaseOf(expr);

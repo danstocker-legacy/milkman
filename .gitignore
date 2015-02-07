@@ -1,5 +1,6 @@
 /.idea/
 /out/
+/doc/
 /node_modules/
 milkman.js
 *.tgz
