@@ -1,42 +1,42 @@
-/*global dessert, troop, sntls, evan, flock, m$ */
+/*global dessert, troop, sntls, evan, flock, milkman */
 /*global module, test, expect, ok, equal, strictEqual, notStrictEqual, deepEqual, notDeepEqual, raises */
 (function () {
     "use strict";
 
     module("PushStateProxy", {
         setup   : function () {
-            m$.usePushState = true;
+            milkman.usePushState = true;
         },
         teardown: function () {
-            m$.usePushState = false;
+            milkman.usePushState = false;
         }
     });
 
     test("Conversion from LocationHash", function () {
-        var locationProxy = m$.LocationProxy.create();
-        ok(locationProxy.isA(m$.PushStateProxy), "should return PushStateProxy instance");
+        var locationProxy = milkman.LocationProxy.create();
+        ok(locationProxy.isA(milkman.PushStateProxy), "should return PushStateProxy instance");
     });
 
     test("Route getter", function () {
-        m$.PushStateProxy.addMocks({
+        milkman.PushStateProxy.addMocks({
             _pathNameGetterProxy: function () {
                 ok(true, "should fetch URL path name");
                 return '/foo';
             }
         });
 
-        var route = m$.PushStateProxy.create().getRoute();
+        var route = milkman.PushStateProxy.create().getRoute();
 
-        ok(route.isA(m$.Route), "should return Route instance");
+        ok(route.isA(milkman.Route), "should return Route instance");
         equal(route.toString(), 'foo', "should set route content");
 
-        m$.PushStateProxy.removeMocks();
+        milkman.PushStateProxy.removeMocks();
     });
 
     test("Route setter", function () {
         expect(7);
 
-        var pushStateProxy = m$.PushStateProxy.create();
+        var pushStateProxy = milkman.PushStateProxy.create();
 
         raises(function () {
             pushStateProxy.setRoute();
@@ -46,7 +46,7 @@
             pushStateProxy.setRoute('foo');
         }, "should raise exception on invalid arguments");
 
-        m$.PushStateProxy.addMocks({
+        milkman.PushStateProxy.addMocks({
             getRoute: function () {
                 ok(true, "should fetch current route");
                 return 'foo'.toRoute();
@@ -66,6 +66,6 @@
         // will trigger only the current route getter
         pushStateProxy.setRoute('foo'.toRoute());
 
-        m$.PushStateProxy.removeMocks();
+        milkman.PushStateProxy.removeMocks();
     });
 }());

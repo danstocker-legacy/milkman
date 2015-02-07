@@ -1,4 +1,4 @@
-/*global dessert, troop, sntls, evan, m$ */
+/*global dessert, troop, sntls, evan, milkman */
 /*global module, test, expect, ok, equal, strictEqual, notStrictEqual, deepEqual, notDeepEqual, raises */
 (function () {
     "use strict";
@@ -7,7 +7,7 @@
 
     test("Instantiation", function () {
         var eventSpace = evan.EventSpace.create(),
-            event = m$.RoutingEvent.create('foo', eventSpace);
+            event = milkman.RoutingEvent.create('foo', eventSpace);
 
         ok(event.hasOwnProperty('beforeRoute'), "should add beforeRoute property");
         equal(typeof event.beforeRoute, 'undefined', "should set beforeRoute to undefined");
@@ -16,12 +16,12 @@
     });
 
     test("Conversion from Event", function () {
-        var event = evan.Event.create('foo', m$.routingEventSpace);
-        ok(event.isA(m$.RoutingEvent), "should return RoutingEvent instance");
+        var event = evan.Event.create('foo', milkman.routingEventSpace);
+        ok(event.isA(milkman.RoutingEvent), "should return RoutingEvent instance");
     });
 
     test("Before route setter", function () {
-        var event = m$.RoutingEvent.create('foo', evan.EventSpace.create());
+        var event = milkman.RoutingEvent.create('foo', evan.EventSpace.create());
 
         raises(function () {
             event.setBeforeRoute('foo');
@@ -33,7 +33,7 @@
     });
 
     test("After route setter", function () {
-        var event = m$.RoutingEvent.create('foo', evan.EventSpace.create());
+        var event = milkman.RoutingEvent.create('foo', evan.EventSpace.create());
 
         raises(function () {
             event.setAfterRoute('foo');
@@ -48,7 +48,7 @@
         var eventSpace = evan.EventSpace.create(),
             beforeRoute = 'foo'.toRoute(),
             afterRoute = 'bar'.toRoute(),
-            event = m$.RoutingEvent.create('foo', eventSpace)
+            event = milkman.RoutingEvent.create('foo', eventSpace)
                 .setBeforeRoute(beforeRoute)
                 .setAfterRoute(afterRoute),
             clonedEvent = event.clone('hello>world'.toPath());
