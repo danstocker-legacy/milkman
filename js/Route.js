@@ -9,6 +9,11 @@ troop.postpone(milkman, 'Route', function () {
      * Creates a Route instance.
      * You may create route instances by conversion from string, array, and sntls.Path instances
      * by calling '.toRoute()' on them.
+     * This is what you'll ultimately use for routing, both for navigation and for intercepting routing events.
+     * @example
+     * 'user/joe'.toRoute().navigateTo();
+     * // or to capture events
+     * [].toRoute().subscribeTo(...);
      * @name milkman.Route.create
      * @function
      * @param {sntls.Path} routePath
