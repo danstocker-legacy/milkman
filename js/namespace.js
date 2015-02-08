@@ -49,12 +49,6 @@ if (typeof document === 'undefined') {
 }
 
 /**
- * Native number class.
- * @name Number
- * @class
- */
-
-/**
  * Native string class.
  * @name String
  * @class
@@ -63,10 +57,5 @@ if (typeof document === 'undefined') {
 /**
  * Native array class.
  * @name Array
- * @class
- */
-
-/**
- * @name sntls.Hash
  * @class
  */
