@@ -8,7 +8,7 @@
         "hash", "pushstate", "history"
     ],
     "author"         : "Dan Stocker <dan@kwaia.com>",
-    "copyright"      : "Copyright (c) 2014 Dan Stocker",
+    "copyright"      : "Copyright (c) 2014-2015 Dan Stocker",
     "license"        : "MIT",
     "repository"     : {
         "type": "git",
