@@ -43,3 +43,7 @@ To listen to all routing events, you'll need to subscribe to en empty route.
 
     [].toRoute().subscribeTo(...);
 
+Sample code
+-----------
+
+To see milkman in action, check out [Hills](https://github.com/danstocker/hills).
