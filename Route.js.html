@@ -1,4 +1,31 @@
-/*global dessert, troop, sntls, evan, milkman */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Route.js</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Source: Route.js</h1>
+    
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source"><code>/*global dessert, troop, sntls, evan, milkman */
 troop.postpone(milkman, 'Route', function () {
     "use strict";
 
@@ -6,6 +33,13 @@ troop.postpone(milkman, 'Route', function () {
         self = base.extend();
 
     /**
+     * Creates a Route instance.
+     * You may create route instances by conversion from string, array, and sntls.Path instances
+     * by calling '.toRoute()' on them.
+     * @example
+     * 'user/joe'.toRoute().navigateTo();
+     * // or to capture events
+     * [].toRoute().subscribeTo(...);
      * @name milkman.Route.create
      * @function
      * @param {sntls.Path} routePath
@@ -13,13 +47,24 @@ troop.postpone(milkman, 'Route', function () {
      */
 
     /**
+     * Describes an application route, which reflects the current state of the application.
+     * The same route should generally yield the same application state when applied via the routing
+     * mechanism.
+     * This is the class you'll ultimately use for routing, both for navigation and for intercepting routing events.
      * @class
      * @extends troop.Base
      * @extends evan.Evented
      */
     milkman.Route = self
         .addTraitAndExtend(evan.Evented)
-        .setEventSpace(milkman.routingEventSpace)
+        .addConstants(/** @lends milkman.Route */{
+            /**
+             * Root path for all route event paths.
+             * @constant
+             * @type {string}
+             */
+            ROUTE_EVENT_PATH_ROOT: 'route'
+        })
         .addMethods(/** @lends milkman.Route# */{
             /**
              * @param {sntls.Path} routePath
@@ -34,8 +79,12 @@ troop.postpone(milkman, 'Route', function () {
                  */
                 this.routePath = routePath;
 
+                var eventPath = routePath.clone()
+                    .prependKey(this.ROUTE_EVENT_PATH_ROOT);
+
                 // setting event path as self
-                this.setEventPath(routePath);
+                this.setEventSpace(milkman.routingEventSpace)
+                    .setEventPath(eventPath);
             },
 
             /**
@@ -71,17 +120,12 @@ troop.postpone(milkman, 'Route', function () {
                 return this;
             },
 
-            /** @returns {string} */
+            /**
+             * @returns {string}
+             * @ignore
+             */
             toString: function () {
                 return this.routePath.asArray.join('/');
-            },
-
-            /**
-             * Converts path instance to hash string.
-             * @returns {string}
-             */
-            toHash: function () {
-                return '#' + this;
             }
         });
 });
@@ -104,10 +148,12 @@ troop.amendPostponed(sntls, 'Path', function () {
     "use strict";
 
     dessert.addTypes(/** @lends dessert */{
+        /** @param {milkman.Route} expr */
         isRoute: function (expr) {
             return milkman.Route.isBaseOf(expr);
         },
 
+        /** @param {milkman.Route} [expr] */
         isRouteOptional: function (expr) {
             return typeof expr === 'undefined' ||
                    milkman.Route.isBaseOf(expr);
@@ -123,20 +169,6 @@ troop.amendPostponed(sntls, 'Path', function () {
              */
             toRoute: function () {
                 return milkman.Route.create(this.split('/').toPath());
-            },
-
-            /**
-             * Creates a new Route instance based on the current string interpreted as a hash.
-             * @returns {milkman.Route}
-             */
-            toRouteFromHash: function () {
-                var hash = this.split('#')[1];
-
-                var asArray = hash ?
-                    hash.split('/') :
-                    [];
-
-                return milkman.Route.create(asArray.toPath());
             }
         },
         false, false, false
@@ -156,3 +188,25 @@ troop.amendPostponed(sntls, 'Path', function () {
         false, false, false
     );
 }());
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Array.html">Array</a></li><li><a href="dessert.html">dessert</a></li><li><a href="milkman.HashProxy.html">HashProxy</a></li><li><a href="milkman.LocationProxy.html">LocationProxy</a></li><li><a href="milkman.PushStateProxy.html">PushStateProxy</a></li><li><a href="milkman.Route.html">Route</a></li><li><a href="milkman.Router.html">Router</a></li><li><a href="milkman.RoutingEvent.html">RoutingEvent</a></li><li><a href="milkman.SilentProxy.html">SilentProxy</a></li><li><a href="String.html">String</a></li></ul><h3>Namespaces</h3><ul><li><a href="evan.html">evan</a></li><li><a href="milkman.html">milkman</a></li><li><a href="sntls.html">sntls</a></li><li><a href="troop.html">troop</a></li></ul><h3>Global</h3><ul><li><a href="global.html#document">document</a></li><li><a href="global.html#window">window</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Sat Feb 14 2015 09:35:22 GMT-0000 (GMT)
+</footer>
+
+<script> prettyPrint(); </script>
+</body>
+</html>
