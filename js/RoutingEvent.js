@@ -17,7 +17,7 @@ troop.postpone(milkman, 'RoutingEvent', function () {
 
     /**
      * Represents an event traversing the routing event space.
-     * Carries information about the route(s) involved in the event.
+     * Carries information about the different route(s) involved.
      * @class
      * @extends evan.Event
      */
