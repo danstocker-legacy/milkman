@@ -1,4 +1,4 @@
-/*global dessert, troop, sntls, e$, milkman */
+/*global dessert, troop, sntls, evan, milkman */
 /*global module, test, expect, ok, equal, strictEqual, notStrictEqual, deepEqual, notDeepEqual, raises */
 (function () {
     "use strict";
@@ -152,9 +152,8 @@
         expect(5);
 
         var route = 'foo/bar'.toRoute()
-                .setNextOriginalEvent(milkman.routingEventSpace.spawnEvent('foo'))
-                .setNextPayload({}),
-            routingEvent;
+                .pushOriginalEvent(milkman.routingEventSpace.spawnEvent('foo'))
+                .pushPayload({});
 
         router.currentRoute = 'foo/baz'.toRoute();
 
@@ -197,6 +196,9 @@
 
         router.navigateToRoute(route);
 
+        route.popOriginalEvent();
+        route.popPayload();
+
         milkman.RoutingEvent.removeMocks();
     });
 
@@ -204,8 +206,8 @@
         expect(4);
 
         var route = 'foo/bar'.toRoute()
-                .setNextOriginalEvent(milkman.routingEventSpace.spawnEvent('foo'))
-                .setNextPayload({}),
+                .pushOriginalEvent(milkman.routingEventSpace.spawnEvent('foo'))
+                .pushPayload({}),
             routingEvent;
 
         router.currentRoute = 'foo/baz'.toRoute();
@@ -230,6 +232,9 @@
         });
 
         strictEqual(router.navigateToRouteSilent(route), router, "should be chainable");
+
+        route.popOriginalEvent();
+        route.popPayload();
 
         milkman.RoutingEvent.removeMocks();
     });
