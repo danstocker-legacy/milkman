@@ -149,7 +149,7 @@
     });
 
     test("Navigation", function () {
-        expect(7);
+        expect(5);
 
         var route = 'foo/bar'.toRoute()
                 .setNextOriginalEvent(milkman.routingEventSpace.spawnEvent('foo'))
@@ -159,20 +159,6 @@
         router.currentRoute = 'foo/baz'.toRoute();
 
         milkman.RoutingEvent.addMocks({
-            setOriginalEvent: function (originalEvent) {
-                routingEvent = this;
-
-                strictEqual(originalEvent, route.nextOriginalEvent,
-                    "should set original event to next original event stored on route");
-                return this;
-            },
-
-            setPayload: function (payload) {
-                strictEqual(payload, route.nextPayload,
-                    "should set payload to next payload stored on route");
-                return this;
-            },
-
             setBeforeRoute: function (beforeRoute) {
                 strictEqual(beforeRoute, router.currentRoute,
                     "should set before route to current route on router");
@@ -215,7 +201,7 @@
     });
 
     test("Silent navigation", function () {
-        expect(7);
+        expect(4);
 
         var route = 'foo/bar'.toRoute()
                 .setNextOriginalEvent(milkman.routingEventSpace.spawnEvent('foo'))
@@ -225,21 +211,6 @@
         router.currentRoute = 'foo/baz'.toRoute();
 
         milkman.RoutingEvent.addMocks({
-            setOriginalEvent: function (originalEvent) {
-                routingEvent = this;
-
-                equal(this.eventName, milkman.Router.EVENT_ROUTE_CHANGE, "should spawn a route-leave event");
-                strictEqual(originalEvent, route.nextOriginalEvent,
-                    "should set original event to next original event stored on route");
-                return this;
-            },
-
-            setPayload: function (payload) {
-                strictEqual(payload, route.nextPayload,
-                    "should set payload to next payload stored on route");
-                return this;
-            },
-
             setBeforeRoute: function (beforeRoute) {
                 strictEqual(beforeRoute, router.currentRoute,
                     "should set before route to current route on router");
@@ -248,7 +219,7 @@
 
             setAfterRoute: function (afterRoute) {
                 strictEqual(afterRoute, route, "should set after route to specified route");
-                return this;
+                return routingEvent;
             }
         });
 
