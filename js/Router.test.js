@@ -151,9 +151,11 @@
     test("Navigation", function () {
         expect(5);
 
-        var route = 'foo/bar'.toRoute()
-                .pushOriginalEvent(milkman.routingEventSpace.spawnEvent('foo'))
-                .pushPayload({});
+        var route = 'foo/bar'.toRoute();
+
+        evan.eventPropertyStack
+            .pushOriginalEvent(milkman.routingEventSpace.spawnEvent('foo'))
+            .pushPayload({});
 
         router.currentRoute = 'foo/baz'.toRoute();
 
@@ -178,6 +180,9 @@
 
         strictEqual(router.navigateToRoute(route), router, "should be chainable");
 
+        evan.eventPropertyStack.popOriginalEvent();
+        evan.eventPropertyStack.popPayload();
+
         milkman.RoutingEvent.removeMocks();
     });
 
@@ -196,19 +201,18 @@
 
         router.navigateToRoute(route);
 
-        route.popOriginalEvent();
-        route.popPayload();
-
         milkman.RoutingEvent.removeMocks();
     });
 
     test("Silent navigation", function () {
         expect(4);
 
-        var route = 'foo/bar'.toRoute()
-                .pushOriginalEvent(milkman.routingEventSpace.spawnEvent('foo'))
-                .pushPayload({}),
+        var route = 'foo/bar'.toRoute(),
             routingEvent;
+
+        evan.eventPropertyStack
+            .pushOriginalEvent(milkman.routingEventSpace.spawnEvent('foo'))
+            .pushPayload({});
 
         router.currentRoute = 'foo/baz'.toRoute();
 
@@ -233,8 +237,8 @@
 
         strictEqual(router.navigateToRouteSilent(route), router, "should be chainable");
 
-        route.popOriginalEvent();
-        route.popPayload();
+        evan.eventPropertyStack.popOriginalEvent();
+        evan.eventPropertyStack.popPayload();
 
         milkman.RoutingEvent.removeMocks();
     });
