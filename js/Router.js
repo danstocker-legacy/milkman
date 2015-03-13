@@ -123,13 +123,14 @@ troop.postpone(milkman, 'Router', function () {
              * Sets the application route.
              * If route has nextOriginalEvent or nextPayload set, they will be transferred to the event.
              * @param {milkman.Route} route
+             * @param {*} [payload]
              * @returns {milkman.Router}
              */
-            navigateToRoute: function (route) {
+            navigateToRoute: function (route, payload) {
                 dessert.isRoute(route, "Invalid route path");
 
                 if (!route.equals(this.currentRoute)) {
-                    milkman.routingEventSpace.spawnEvent(this.EVENT_ROUTE_LEAVE)
+                    milkman.routingEventSpace.spawnEvent(this.EVENT_ROUTE_LEAVE, payload)
                         .setBeforeRoute(this.currentRoute)
                         .setAfterRoute(route)
                         .triggerSync(route.eventPath);
@@ -142,15 +143,16 @@ troop.postpone(milkman, 'Router', function () {
              * Sets application route without altering the browser hash.
              * If route has nextOriginalEvent or nextPayload set, they will be transferred to the event.
              * @param {milkman.Route} route
+             * @param {*} [payload]
              * @returns {milkman.Router}
              */
-            navigateToRouteSilent: function (route) {
+            navigateToRouteSilent: function (route, payload) {
                 dessert.isRoute(route, "Invalid route path");
 
                 var routingEvent;
 
                 if (!route.equals(this.currentRoute)) {
-                    routingEvent = milkman.routingEventSpace.spawnEvent(this.EVENT_ROUTE_CHANGE)
+                    routingEvent = milkman.routingEventSpace.spawnEvent(this.EVENT_ROUTE_CHANGE, payload)
                         .setBeforeRoute(this.currentRoute)
                         .setAfterRoute(route);
 
