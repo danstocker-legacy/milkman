@@ -151,11 +151,8 @@
     test("Navigation", function () {
         expect(5);
 
-        var route = 'foo/bar'.toRoute();
-
-        evan.eventPropertyStack
-            .pushOriginalEvent(milkman.routingEventSpace.spawnEvent('foo'))
-            .pushPayload({});
+        var route = 'foo/bar'.toRoute(),
+            link = evan.pushOriginalEvent(milkman.routingEventSpace.spawnEvent('foo'));
 
         router.currentRoute = 'foo/baz'.toRoute();
 
@@ -180,8 +177,7 @@
 
         strictEqual(router.navigateToRoute(route), router, "should be chainable");
 
-        evan.eventPropertyStack.popOriginalEvent();
-        evan.eventPropertyStack.popPayload();
+        link.unLink();
 
         milkman.RoutingEvent.removeMocks();
     });
@@ -208,11 +204,8 @@
         expect(4);
 
         var route = 'foo/bar'.toRoute(),
-            routingEvent;
-
-        evan.eventPropertyStack
-            .pushOriginalEvent(milkman.routingEventSpace.spawnEvent('foo'))
-            .pushPayload({});
+            routingEvent,
+            link = evan.pushOriginalEvent(milkman.routingEventSpace.spawnEvent('foo'));
 
         router.currentRoute = 'foo/baz'.toRoute();
 
@@ -237,8 +230,7 @@
 
         strictEqual(router.navigateToRouteSilent(route), router, "should be chainable");
 
-        evan.eventPropertyStack.popOriginalEvent();
-        evan.eventPropertyStack.popPayload();
+        link.unLink();
 
         milkman.RoutingEvent.removeMocks();
     });
@@ -264,8 +256,7 @@
 
         var leaveEvent = milkman.routingEventSpace.spawnEvent(milkman.Router.EVENT_ROUTE_LEAVE)
                 .setBeforeRoute('foo/bar'.toRoute())
-                .setAfterRoute('hello/world'.toRoute())
-                .setPayload({}),
+                .setAfterRoute('hello/world'.toRoute()),
             routingEvent;
 
         milkman.RoutingEvent.addMocks({
@@ -278,7 +269,7 @@
                 return this;
             },
 
-            setPayload: function (payload) {
+            setPayloadItems: function (payload) {
                 strictEqual(payload, leaveEvent.payload,
                     "should set payload to leave event's payload");
                 return this;
