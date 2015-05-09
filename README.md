@@ -24,7 +24,9 @@ Right after milkman has been loaded (required), you may specify whether you want
 
 Navigating to a route is quite simple. Convert a route string to a `Route` instance, which offers an API that includes navigation.
 
-    'user/joe'.toRoute().navigateTo();
+- Synchronous navigation changes the route immediately. By the time execution comes to the next line, the route will have changed. Example: `'user/joe'.toRoute().navigateTo()`.
+- Asynchronous navigation lets the current thread finish before the route will change. Async navigation returns a `Q` promise, giving you the opportunity to specify some follow-up. Example: `'user/joe'.toRoute().navigateToAsync()`.
+- Debounced navigation allows you to skip routes would they be overridden by subsequent navigation commands within a specified time frame (100ms by default). This is useful when re-routing due to some condition not being met by the application's state. Example: `'user/joe'.toRoute().navigateToDebounced()`.
 
 Alternatively, if you don't want the route to be reflected in the URL (hash or state), silent navigation is also possible.
 
