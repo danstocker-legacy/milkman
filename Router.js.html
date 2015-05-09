@@ -25,7 +25,7 @@
     
     <section>
         <article>
-            <pre class="prettyprint source"><code>/*global console, dessert, troop, sntls, evan, jQuery, window, milkman */
+            <pre class="prettyprint source"><code>/*global console, dessert, troop, sntls, evan, Q, window, milkman */
 troop.postpone(milkman, 'Router', function () {
     "use strict";
 
@@ -53,14 +53,22 @@ troop.postpone(milkman, 'Router', function () {
              * @type {string}
              * @constant
              */
-            EVENT_ROUTE_CHANGE: 'route-change',
+            EVENT_ROUTE_CHANGE: 'milkman.route.change',
 
             /**
              * Signals that a route was left.
              * @type {string}
              * @constant
              */
-            EVENT_ROUTE_LEAVE: 'route-leave'
+            EVENT_ROUTE_LEAVE: 'milkman.route.leave',
+
+            /**
+             * Width of time window in which a new debounced navigation may override the previous one.
+             * (Milliseconds)
+             * @type {number}
+             * @constant
+             */
+            NAVIGATION_DEBOUNCE_DELAY: 100
         })
         .addPrivateMethods(/** @lends milkman.Router */{
             /**
@@ -120,6 +128,8 @@ troop.postpone(milkman, 'Router', function () {
         .addMethods(/** @lends milkman.Router# */{
             /** @ignore */
             init: function () {
+                this.elevateMethod('navigateToRoute');
+
                 /**
                  * Current application route.
                  * @type {milkman.Route}
@@ -128,6 +138,12 @@ troop.postpone(milkman, 'Router', function () {
 
                 /** @type {milkman.LocationProxy} */
                 this.locationProxy = milkman.LocationProxy.create();
+
+                /**
+                 * Used in debounced navigation.
+                 * @type {sntls.Debouncer}
+                 */
+                this.navigationDebouncer = this.navigateToRoute.toDebouncer();
 
                 /**
                  * Stores routing events to be triggered after hash change.
@@ -153,12 +169,10 @@ troop.postpone(milkman, 'Router', function () {
              * @returns {milkman.Router}
              */
             navigateToRoute: function (route) {
-                dessert.isRoute(route, "Invalid route path");
+                dessert.isRoute(route, "Invalid route");
 
                 if (!route.equals(this.currentRoute)) {
                     milkman.routingEventSpace.spawnEvent(this.EVENT_ROUTE_LEAVE)
-                        .setOriginalEvent(route.nextOriginalEvent)
-                        .setPayload(route.nextPayload)
                         .setBeforeRoute(this.currentRoute)
                         .setAfterRoute(route)
                         .triggerSync(route.eventPath);
@@ -174,20 +188,48 @@ troop.postpone(milkman, 'Router', function () {
              * @returns {milkman.Router}
              */
             navigateToRouteSilent: function (route) {
-                dessert.isRoute(route, "Invalid route path");
+                dessert.isRoute(route, "Invalid route");
 
                 var routingEvent;
 
                 if (!route.equals(this.currentRoute)) {
                     routingEvent = milkman.routingEventSpace.spawnEvent(this.EVENT_ROUTE_CHANGE)
-                        .setOriginalEvent(route.nextOriginalEvent)
-                        .setPayload(route.nextPayload)
                         .setBeforeRoute(this.currentRoute)
                         .setAfterRoute(route);
 
                     this._applyRouteChange(routingEvent);
                 }
 
+                return this;
+            },
+
+            /**
+             * Navigates to the specified route asynchronously.
+             * Asynchronous navigation allows the application to complete any operation
+             * before leaving the current route.
+             * @param {milkman.Route} route
+             * @returns {Q.Promise}
+             */
+            navigateToRouteAsync: function (route) {
+                var that = this,
+                    deferred = Q.defer();
+
+                setTimeout(function () {
+                    that.navigateToRoute(route);
+                    deferred.resolve();
+                }, 0);
+
+                return deferred.promise;
+            },
+
+            /**
+             * Navigates to the specified route de-bounced. Subsequent calls to debounced navigation
+             * within the allotted time frame will override previous ones.
+             * @param {milkman.Route} route
+             * @returns {milkman.Router}
+             */
+            navigateToRouteDebounced: function (route) {
+                this.navigationDebouncer.runDebounced(this.NAVIGATION_DEBOUNCE_DELAY, route);
                 return this;
             },
 
@@ -205,7 +247,7 @@ troop.postpone(milkman, 'Router', function () {
                 var route = event.afterRoute,
                     routeChangeEvent = milkman.routingEventSpace.spawnEvent(milkman.Router.EVENT_ROUTE_CHANGE)
                         .setOriginalEvent(event)
-                        .setPayload(event.payload)
+                        .setPayloadItems(event.payload)
                         .setBeforeRoute(event.beforeRoute)
                         .setAfterRoute(event.afterRoute);
 
@@ -292,13 +334,13 @@ troop.postpone(milkman, 'logRoutingEvents', function () {
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Array.html">Array</a></li><li><a href="dessert.html">dessert</a></li><li><a href="milkman.HashProxy.html">HashProxy</a></li><li><a href="milkman.LocationProxy.html">LocationProxy</a></li><li><a href="milkman.PushStateProxy.html">PushStateProxy</a></li><li><a href="milkman.Route.html">Route</a></li><li><a href="milkman.Router.html">Router</a></li><li><a href="milkman.RoutingEvent.html">RoutingEvent</a></li><li><a href="milkman.SilentProxy.html">SilentProxy</a></li><li><a href="String.html">String</a></li></ul><h3>Namespaces</h3><ul><li><a href="evan.html">evan</a></li><li><a href="milkman.html">milkman</a></li><li><a href="sntls.html">sntls</a></li><li><a href="troop.html">troop</a></li></ul><h3>Global</h3><ul><li><a href="global.html#document">document</a></li><li><a href="global.html#window">window</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Array.html">Array</a></li><li><a href="dessert.html">dessert</a></li><li><a href="milkman.HashProxy.html">HashProxy</a></li><li><a href="milkman.LocationProxy.html">LocationProxy</a></li><li><a href="milkman.PushStateProxy.html">PushStateProxy</a></li><li><a href="milkman.Route.html">Route</a></li><li><a href="milkman.Router.html">Router</a></li><li><a href="milkman.RoutingEvent.html">RoutingEvent</a></li><li><a href="milkman.SilentProxy.html">SilentProxy</a></li><li><a href="String.html">String</a></li></ul><h3>Namespaces</h3><ul><li><a href="evan.html">evan</a></li><li><a href="milkman.html">milkman</a></li><li><a href="Q.html">Q</a></li><li><a href="sntls.html">sntls</a></li><li><a href="troop.html">troop</a></li></ul><h3>Global</h3><ul><li><a href="global.html#document">document</a></li><li><a href="global.html#window">window</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Sat Feb 14 2015 09:53:43 GMT-0000 (GMT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Sat May 09 2015 12:52:23 GMT+0100 (BST)
 </footer>
 
 <script> prettyPrint(); </script>

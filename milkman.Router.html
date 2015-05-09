@@ -225,6 +225,59 @@ Singleton.
         
             
 <dt>
+    <h4 class="name" id="NAVIGATION_DEBOUNCE_DELAY"><span class="type-signature">&lt;static, constant> </span>NAVIGATION_DEBOUNCE_DELAY<span class="type-signature"> :number</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Width of time window in which a new debounced navigation may override the previous one.
+(Milliseconds)
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Router.js.html">Router.js</a>, line 44
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="_nextRoutingEvents"><span class="type-signature">&lt;private> </span>_nextRoutingEvents<span class="type-signature"> :sntls.Collection</span></h4>
     
     
@@ -260,7 +313,7 @@ Singleton.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Router.js.html">Router.js</a>, line 111
+        <a href="Router.js.html">Router.js</a>, line 127
     </li></ul></dd>
     
     
@@ -312,7 +365,7 @@ Singleton.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Router.js.html">Router.js</a>, line 100
+        <a href="Router.js.html">Router.js</a>, line 110
     </li></ul></dd>
     
     
@@ -360,7 +413,59 @@ Singleton.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Router.js.html">Router.js</a>, line 103
+        <a href="Router.js.html">Router.js</a>, line 113
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="navigationDebouncer"><span class="type-signature"></span>navigationDebouncer<span class="type-signature"> :sntls.Debouncer</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Used in debounced navigation.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Router.js.html">Router.js</a>, line 119
     </li></ul></dd>
     
     
@@ -473,7 +578,7 @@ Singleton.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Router.js.html">Router.js</a>, line 44
+        <a href="Router.js.html">Router.js</a>, line 52
     </li></ul></dd>
     
     
@@ -609,7 +714,7 @@ Singleton.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Router.js.html">Router.js</a>, line 64
+        <a href="Router.js.html">Router.js</a>, line 72
     </li></ul></dd>
     
     
@@ -722,7 +827,7 @@ Singleton.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Router.js.html">Router.js</a>, line 83
+        <a href="Router.js.html">Router.js</a>, line 91
     </li></ul></dd>
     
     
@@ -888,7 +993,7 @@ Singleton.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Router.js.html">Router.js</a>, line 118
+        <a href="Router.js.html">Router.js</a>, line 134
     </li></ul></dd>
     
     
@@ -1020,7 +1125,272 @@ If route has nextOriginalEvent or nextPayload set, they will be transferred to t
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Router.js.html">Router.js</a>, line 128
+        <a href="Router.js.html">Router.js</a>, line 144
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="milkman.Router.html">milkman.Router</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="navigateToRouteAsync"><span class="type-signature"></span>navigateToRouteAsync<span class="signature">(route)</span><span class="type-signature"> &rarr; {Q.Promise}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Navigates to the specified route asynchronously.
+Asynchronous navigation allows the application to complete any operation
+before leaving the current route.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>route</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="milkman.Route.html">milkman.Route</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Router.js.html">Router.js</a>, line 186
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Q.Promise</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="navigateToRouteDebounced"><span class="type-signature"></span>navigateToRouteDebounced<span class="signature">(route)</span><span class="type-signature"> &rarr; {<a href="milkman.Router.html">milkman.Router</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Navigates to the specified route de-bounced. Subsequent calls to debounced navigation
+within the allotted time frame will override previous ones.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>route</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="milkman.Route.html">milkman.Route</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Router.js.html">Router.js</a>, line 204
     </li></ul></dd>
     
     
@@ -1152,7 +1522,7 @@ If route has nextOriginalEvent or nextPayload set, they will be transferred to t
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Router.js.html">Router.js</a>, line 149
+        <a href="Router.js.html">Router.js</a>, line 163
     </li></ul></dd>
     
     
@@ -1207,13 +1577,13 @@ If route has nextOriginalEvent or nextPayload set, they will be transferred to t
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Array.html">Array</a></li><li><a href="dessert.html">dessert</a></li><li><a href="milkman.HashProxy.html">HashProxy</a></li><li><a href="milkman.LocationProxy.html">LocationProxy</a></li><li><a href="milkman.PushStateProxy.html">PushStateProxy</a></li><li><a href="milkman.Route.html">Route</a></li><li><a href="milkman.Router.html">Router</a></li><li><a href="milkman.RoutingEvent.html">RoutingEvent</a></li><li><a href="milkman.SilentProxy.html">SilentProxy</a></li><li><a href="String.html">String</a></li></ul><h3>Namespaces</h3><ul><li><a href="evan.html">evan</a></li><li><a href="milkman.html">milkman</a></li><li><a href="sntls.html">sntls</a></li><li><a href="troop.html">troop</a></li></ul><h3>Global</h3><ul><li><a href="global.html#document">document</a></li><li><a href="global.html#window">window</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Array.html">Array</a></li><li><a href="dessert.html">dessert</a></li><li><a href="milkman.HashProxy.html">HashProxy</a></li><li><a href="milkman.LocationProxy.html">LocationProxy</a></li><li><a href="milkman.PushStateProxy.html">PushStateProxy</a></li><li><a href="milkman.Route.html">Route</a></li><li><a href="milkman.Router.html">Router</a></li><li><a href="milkman.RoutingEvent.html">RoutingEvent</a></li><li><a href="milkman.SilentProxy.html">SilentProxy</a></li><li><a href="String.html">String</a></li></ul><h3>Namespaces</h3><ul><li><a href="evan.html">evan</a></li><li><a href="milkman.html">milkman</a></li><li><a href="Q.html">Q</a></li><li><a href="sntls.html">sntls</a></li><li><a href="troop.html">troop</a></li></ul><h3>Global</h3><ul><li><a href="global.html#document">document</a></li><li><a href="global.html#window">window</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Sat Feb 14 2015 09:53:44 GMT-0000 (GMT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Sat May 09 2015 12:52:23 GMT+0100 (BST)
 </footer>
 
 <script> prettyPrint(); </script>

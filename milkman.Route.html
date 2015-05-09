@@ -505,7 +505,7 @@ by calling '.toRoute()' on them.
         
             
 <dt>
-    <h4 class="name" id="navigateTo"><span class="type-signature"></span>navigateTo<span class="signature">(<span class="optional">payload</span>, <span class="optional">originalEvent</span>)</span><span class="type-signature"> &rarr; {<a href="milkman.Route.html">milkman.Route</a>}</span></h4>
+    <h4 class="name" id="navigateTo"><span class="type-signature"></span>navigateTo<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="milkman.Route.html">milkman.Route</a>}</span></h4>
     
     
 </dt>
@@ -521,99 +521,6 @@ by calling '.toRoute()' on them.
     
     
     
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Argument</th>
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>payload</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>originalEvent</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">evan.Event</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
     
     
     
@@ -639,7 +546,7 @@ by calling '.toRoute()' on them.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Route.js.html">Route.js</a>, line 78
+        <a href="Route.js.html">Route.js</a>, line 76
     </li></ul></dd>
     
     
@@ -681,7 +588,7 @@ by calling '.toRoute()' on them.
         
             
 <dt>
-    <h4 class="name" id="navigateToSilent"><span class="type-signature"></span>navigateToSilent<span class="signature">(<span class="optional">payload</span>, <span class="optional">originalEvent</span>)</span><span class="type-signature"> &rarr; {<a href="milkman.Route.html">milkman.Route</a>}</span></h4>
+    <h4 class="name" id="navigateToAsync"><span class="type-signature"></span>navigateToAsync<span class="signature">()</span><span class="type-signature"> &rarr; {Q.Promise}</span></h4>
     
     
 </dt>
@@ -689,7 +596,8 @@ by calling '.toRoute()' on them.
     
     
     <div class="description">
-        Navigates app to current route path silently.
+        Navigates app to current route asynchronously.
+Synchronous operations following the call to this method will complete before leaving the current route.
     </div>
     
 
@@ -697,99 +605,6 @@ by calling '.toRoute()' on them.
     
     
     
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Argument</th>
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>payload</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>originalEvent</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">evan.Event</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
     
     
     
@@ -815,7 +630,174 @@ by calling '.toRoute()' on them.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Route.js.html">Route.js</a>, line 90
+        <a href="Route.js.html">Route.js</a>, line 97
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Q.Promise</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="navigateToDebounced"><span class="type-signature"></span>navigateToDebounced<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="milkman.Route.html">milkman.Route</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Navigates app to current route debounced. Subsequent calls to this method on equivalent routes
+within the time window specified by `Router` will cancel and override previous ones.
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Route.js.html">Route.js</a>, line 107
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="milkman.Route.html">milkman.Route</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="navigateToSilent"><span class="type-signature"></span>navigateToSilent<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="milkman.Route.html">milkman.Route</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Navigates app to current route silently.
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Route.js.html">Route.js</a>, line 86
     </li></ul></dd>
     
     
@@ -870,13 +852,13 @@ by calling '.toRoute()' on them.
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Array.html">Array</a></li><li><a href="dessert.html">dessert</a></li><li><a href="milkman.HashProxy.html">HashProxy</a></li><li><a href="milkman.LocationProxy.html">LocationProxy</a></li><li><a href="milkman.PushStateProxy.html">PushStateProxy</a></li><li><a href="milkman.Route.html">Route</a></li><li><a href="milkman.Router.html">Router</a></li><li><a href="milkman.RoutingEvent.html">RoutingEvent</a></li><li><a href="milkman.SilentProxy.html">SilentProxy</a></li><li><a href="String.html">String</a></li></ul><h3>Namespaces</h3><ul><li><a href="evan.html">evan</a></li><li><a href="milkman.html">milkman</a></li><li><a href="sntls.html">sntls</a></li><li><a href="troop.html">troop</a></li></ul><h3>Global</h3><ul><li><a href="global.html#document">document</a></li><li><a href="global.html#window">window</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Array.html">Array</a></li><li><a href="dessert.html">dessert</a></li><li><a href="milkman.HashProxy.html">HashProxy</a></li><li><a href="milkman.LocationProxy.html">LocationProxy</a></li><li><a href="milkman.PushStateProxy.html">PushStateProxy</a></li><li><a href="milkman.Route.html">Route</a></li><li><a href="milkman.Router.html">Router</a></li><li><a href="milkman.RoutingEvent.html">RoutingEvent</a></li><li><a href="milkman.SilentProxy.html">SilentProxy</a></li><li><a href="String.html">String</a></li></ul><h3>Namespaces</h3><ul><li><a href="evan.html">evan</a></li><li><a href="milkman.html">milkman</a></li><li><a href="Q.html">Q</a></li><li><a href="sntls.html">sntls</a></li><li><a href="troop.html">troop</a></li></ul><h3>Global</h3><ul><li><a href="global.html#document">document</a></li><li><a href="global.html#window">window</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Sat Feb 14 2015 09:53:44 GMT-0000 (GMT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Sat May 09 2015 12:52:23 GMT+0100 (BST)
 </footer>
 
 <script> prettyPrint(); </script>
