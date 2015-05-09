@@ -80,7 +80,7 @@ troop.postpone(milkman, 'Route', function () {
             },
 
             /**
-             * Navigates app to current route path silently.
+             * Navigates app to current route silently.
              * @returns {milkman.Route}
              */
             navigateToSilent: function () {
@@ -90,7 +90,8 @@ troop.postpone(milkman, 'Route', function () {
             },
 
             /**
-             * Navigates app to current route path silently.
+             * Navigates app to current route asynchronously.
+             * Synchronous operations following the call to this method will complete before leaving the current route.
              * @returns {Q.Promise}
              */
             navigateToAsync: function () {
@@ -99,7 +100,8 @@ troop.postpone(milkman, 'Route', function () {
             },
 
             /**
-             * Navigates app to current route path silently.
+             * Navigates app to current route debounced. Subsequent calls to this method on equivalent routes
+             * within the time window specified by `Router` will cancel and override previous ones.
              * @returns {milkman.Route}
              */
             navigateToDebounced: function () {
