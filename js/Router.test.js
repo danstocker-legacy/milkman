@@ -1,5 +1,5 @@
 /*global dessert, troop, sntls, evan, milkman */
-/*global module, test, expect, ok, equal, strictEqual, notStrictEqual, deepEqual, notDeepEqual, raises */
+/*global module, test, asyncTest, start, expect, ok, equal, strictEqual, notStrictEqual, deepEqual, notDeepEqual, raises */
 (function () {
     "use strict";
 
@@ -249,6 +249,50 @@
         });
 
         router.navigateToRouteSilent(route);
+    });
+
+    asyncTest("Asynchronous navigation", function () {
+        var targetRoute = 'foo/bar'.toRoute();
+
+        router.addMocks({
+            navigateToRoute: function (route) {
+                strictEqual(route, targetRoute, "should navigate to specified route");
+            }
+        });
+
+        router.navigateToRouteAsync(targetRoute)
+            .then(function () {
+                ok(true, "should return promise that eventually resolves");
+                start();
+            });
+    });
+
+    asyncTest("Debounced navigation", function () {
+        expect(3);
+
+        milkman.Router.clearInstanceRegistry();
+
+        milkman.Router.addMocks({
+            navigateToRoute: function (route) {
+                strictEqual(this, router, "should call navigation on router instance");
+                strictEqual(route, targetRoute3, "should navigate to last route route");
+                start();
+            }
+        });
+
+        var router = milkman.Router.create();
+
+        var targetRoute1 = 'foo'.toRoute(),
+            targetRoute2 = 'bar'.toRoute(),
+            targetRoute3 = 'baz'.toRoute();
+
+        strictEqual(router.navigateToRouteDebounced(targetRoute1), router, "should be chainable");
+
+        router.navigateToRouteDebounced(targetRoute2);
+
+        router.navigateToRouteDebounced(targetRoute3);
+
+        milkman.Router.removeMocks();
     });
 
     test("Route leave handler", function () {

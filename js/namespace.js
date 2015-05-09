@@ -32,6 +32,12 @@ var sntls = sntls || require('sntls');
  */
 var evan = evan || require('evan');
 
+/**
+ * @namespace
+ * @see https://github.com/kriskowal/q
+ */
+var Q = Q || require('q', 'Q');
+
 if (typeof window === 'undefined') {
     /**
      * Built-in global window object.

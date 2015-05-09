@@ -71,25 +71,40 @@ troop.postpone(milkman, 'Route', function () {
 
             /**
              * Navigates app to current route path.
-             * @param {*} [payload]
-             * @param {evan.Event} [originalEvent]
              * @returns {milkman.Route}
              */
-            navigateTo: function (payload, originalEvent) {
+            navigateTo: function () {
                 milkman.Router.create()
-                    .navigateToRoute(this, payload, originalEvent);
+                    .navigateToRoute(this);
                 return this;
             },
 
             /**
              * Navigates app to current route path silently.
-             * @param {*} [payload]
-             * @param {evan.Event} [originalEvent]
              * @returns {milkman.Route}
              */
-            navigateToSilent: function (payload, originalEvent) {
+            navigateToSilent: function () {
                 milkman.Router.create()
-                    .navigateToRouteSilent(this, payload, originalEvent);
+                    .navigateToRouteSilent(this);
+                return this;
+            },
+
+            /**
+             * Navigates app to current route path silently.
+             * @returns {Q.Promise}
+             */
+            navigateToAsync: function () {
+                return milkman.Router.create()
+                    .navigateToRouteAsync(this);
+            },
+
+            /**
+             * Navigates app to current route path silently.
+             * @returns {milkman.Route}
+             */
+            navigateToDebounced: function () {
+                milkman.Router.create()
+                    .navigateToRouteDebounced(this);
                 return this;
             },
 

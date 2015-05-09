@@ -59,37 +59,68 @@
     });
 
     test("Navigation", function () {
-        expect(3);
+        expect(2);
 
-        var route = 'foo/bar'.toRoute(),
-            payload = {};
+        var router = milkman.Router.create(),
+            route = 'foo/bar'.toRoute();
 
-        milkman.Router.addMocks({
-            navigateToRoute: function (targetRoute, targetPayload) {
-                strictEqual(targetRoute, route, "should pass route to navigation");
-                strictEqual(targetPayload, payload, "should pass payload to navigation");
+        router.addMocks({
+            navigateToRoute: function (targetRoute) {
+                strictEqual(targetRoute, route, "should navigate to current route");
             }
         });
 
-        strictEqual(route.navigateTo(payload), route, "should be chainable");
+        strictEqual(route.navigateTo(), route, "should be chainable");
+
+        router.removeMocks();
+    });
+
+    test("Silent navigation", function () {
+        expect(2);
+
+        var route = 'foo/bar'.toRoute();
+
+        milkman.Router.addMocks({
+            navigateToRouteSilent: function (targetRoute) {
+                strictEqual(targetRoute, route, "should navigate to current route");
+            }
+        });
+
+        strictEqual(route.navigateToSilent(), route, "should be chainable");
 
         milkman.Router.removeMocks();
     });
 
-    test("Silent navigation", function () {
-        expect(3);
+    test("Asynchronous navigation", function () {
+        expect(2);
 
         var route = 'foo/bar'.toRoute(),
-            payload = {};
+            promise = {};
 
         milkman.Router.addMocks({
-            navigateToRouteSilent: function (targetRoute, targetPayload) {
-                strictEqual(targetRoute, route);
-                strictEqual(targetPayload, payload);
+            navigateToRouteAsync: function (targetRoute) {
+                strictEqual(targetRoute, route, "should navigate to current route");
+                return promise;
             }
         });
 
-        strictEqual(route.navigateToSilent(payload), route, "should be chainable");
+        strictEqual(route.navigateToAsync(), promise, "should return promise returned by router");
+
+        milkman.Router.removeMocks();
+    });
+
+    test("Debounced navigation", function () {
+        expect(2);
+
+        var route = 'foo/bar'.toRoute();
+
+        milkman.Router.addMocks({
+            navigateToRouteDebounced: function (targetRoute) {
+                strictEqual(targetRoute, route, "should navigate to current route");
+            }
+        });
+
+        strictEqual(route.navigateToDebounced(), route, "should be chainable");
 
         milkman.Router.removeMocks();
     });

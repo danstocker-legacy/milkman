@@ -1,4 +1,4 @@
-/*global console, dessert, troop, sntls, evan, jQuery, window, milkman */
+/*global console, dessert, troop, sntls, evan, Q, window, milkman */
 troop.postpone(milkman, 'Router', function () {
     "use strict";
 
@@ -33,7 +33,15 @@ troop.postpone(milkman, 'Router', function () {
              * @type {string}
              * @constant
              */
-            EVENT_ROUTE_LEAVE: 'route-leave'
+            EVENT_ROUTE_LEAVE: 'route-leave',
+
+            /**
+             * Width of time window in which a new debounced navigation may override the previous one.
+             * (Milliseconds)
+             * @type {number}
+             * @constant
+             */
+            NAVIGATION_DEBOUNCE_DELAY: 100
         })
         .addPrivateMethods(/** @lends milkman.Router */{
             /**
@@ -93,6 +101,8 @@ troop.postpone(milkman, 'Router', function () {
         .addMethods(/** @lends milkman.Router# */{
             /** @ignore */
             init: function () {
+                this.elevateMethod('navigateToRoute');
+
                 /**
                  * Current application route.
                  * @type {milkman.Route}
@@ -101,6 +111,12 @@ troop.postpone(milkman, 'Router', function () {
 
                 /** @type {milkman.LocationProxy} */
                 this.locationProxy = milkman.LocationProxy.create();
+
+                /**
+                 * Used in debounced navigation.
+                 * @type {sntls.Debouncer}
+                 */
+                this.navigationDebouncer = this.navigateToRoute.toDebouncer();
 
                 /**
                  * Stores routing events to be triggered after hash change.
@@ -126,7 +142,7 @@ troop.postpone(milkman, 'Router', function () {
              * @returns {milkman.Router}
              */
             navigateToRoute: function (route) {
-                dessert.isRoute(route, "Invalid route path");
+                dessert.isRoute(route, "Invalid route");
 
                 if (!route.equals(this.currentRoute)) {
                     milkman.routingEventSpace.spawnEvent(this.EVENT_ROUTE_LEAVE)
@@ -145,7 +161,7 @@ troop.postpone(milkman, 'Router', function () {
              * @returns {milkman.Router}
              */
             navigateToRouteSilent: function (route) {
-                dessert.isRoute(route, "Invalid route path");
+                dessert.isRoute(route, "Invalid route");
 
                 var routingEvent;
 
@@ -157,6 +173,36 @@ troop.postpone(milkman, 'Router', function () {
                     this._applyRouteChange(routingEvent);
                 }
 
+                return this;
+            },
+
+            /**
+             * Navigates to the specified route asynchronously.
+             * Asynchronous navigation allows the application to complete any operation
+             * before leaving the current route.
+             * @param {milkman.Route} route
+             * @returns {Q.Promise}
+             */
+            navigateToRouteAsync: function (route) {
+                var that = this,
+                    deferred = Q.defer();
+
+                setTimeout(function () {
+                    that.navigateToRoute(route);
+                    deferred.resolve();
+                }, 0);
+
+                return deferred.promise;
+            },
+
+            /**
+             * Navigates to the specified route de-bounced. Subsequent calls to debounced navigation
+             * within the allotted time frame will override previous ones.
+             * @param {milkman.Route} route
+             * @returns {milkman.Router}
+             */
+            navigateToRouteDebounced: function (route) {
+                this.navigationDebouncer.runDebounced(this.NAVIGATION_DEBOUNCE_DELAY, route);
                 return this;
             },
 
