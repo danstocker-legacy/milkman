@@ -15,7 +15,7 @@
     test("Applying route change", function () {
         expect(2);
 
-        var routingEvent = milkman.routingEventSpace.spawnEvent('foo')
+        var routingEvent = milkman.routingEventSpace.spawnEvent('milkman.route.foo')
             .setBeforeRoute('hello'.toRoute())
             .setAfterRoute('world'.toRoute());
 
@@ -36,7 +36,7 @@
 
         milkman.Router.clearInstanceRegistry();
 
-        var routingEvent = milkman.routingEventSpace.spawnEvent('foo')
+        var routingEvent = milkman.routingEventSpace.spawnEvent('milkman.route.foo')
             .setBeforeRoute('hello'.toRoute())
             .setAfterRoute('hello'.toRoute());
 
@@ -54,7 +54,7 @@
     test("Pushing first routing event", function () {
         expect(4);
 
-        var routingEvent = milkman.routingEventSpace.spawnEvent('hello');
+        var routingEvent = milkman.routingEventSpace.spawnEvent('milkman.route.hello');
 
         router._nextRoutingEvents.addMocks({
             getItem: function (itemName) {
@@ -79,8 +79,8 @@
     test("Pushing subsequent routing events", function () {
         expect(2);
 
-        var routingEvent1 = milkman.routingEventSpace.spawnEvent('hello'),
-            routingEvent2 = milkman.routingEventSpace.spawnEvent('world');
+        var routingEvent1 = milkman.routingEventSpace.spawnEvent('milkman.route.hello'),
+            routingEvent2 = milkman.routingEventSpace.spawnEvent('milkman.route.world');
 
         router._pushRoutingEvent('foo', routingEvent1);
 
@@ -152,7 +152,7 @@
         expect(5);
 
         var route = 'foo/bar'.toRoute(),
-            link = evan.pushOriginalEvent(milkman.routingEventSpace.spawnEvent('foo'));
+            link = evan.pushOriginalEvent(milkman.routingEventSpace.spawnEvent('milkman.route.foo'));
 
         router.currentRoute = 'foo/baz'.toRoute();
 
@@ -205,7 +205,7 @@
 
         var route = 'foo/bar'.toRoute(),
             routingEvent,
-            link = evan.pushOriginalEvent(milkman.routingEventSpace.spawnEvent('foo'));
+            link = evan.pushOriginalEvent(milkman.routingEventSpace.spawnEvent('milkman.route.foo'));
 
         router.currentRoute = 'foo/baz'.toRoute();
 
@@ -352,7 +352,7 @@
     });
 
     test("Route change handler when URL has hash", function () {
-        var event = milkman.routingEventSpace.spawnEvent('foo');
+        var event = milkman.routingEventSpace.spawnEvent('milkman.route.foo');
 
         milkman.HashProxy.addMocks({
             getRoute: function () {
@@ -380,7 +380,7 @@
     test("Hash change handler with no hash", function () {
         expect(5);
 
-        var event = milkman.routingEventSpace.spawnEvent('foo'),
+        var event = milkman.routingEventSpace.spawnEvent('milkman.route.foo'),
             hashChangeEvent = {};
 
         milkman.HashProxy.addMocks({
@@ -414,7 +414,7 @@
     test("Document load handler", function () {
         expect(5);
 
-        var event = milkman.routingEventSpace.spawnEvent('foo'),
+        var event = milkman.routingEventSpace.spawnEvent('milkman.route.foo'),
             documentLoadEvent = {};
 
         milkman.HashProxy.addMocks({

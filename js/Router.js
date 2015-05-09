@@ -26,14 +26,14 @@ troop.postpone(milkman, 'Router', function () {
              * @type {string}
              * @constant
              */
-            EVENT_ROUTE_CHANGE: 'route-change',
+            EVENT_ROUTE_CHANGE: 'milkman.route.change',
 
             /**
              * Signals that a route was left.
              * @type {string}
              * @constant
              */
-            EVENT_ROUTE_LEAVE: 'route-leave',
+            EVENT_ROUTE_LEAVE: 'milkman.route.leave',
 
             /**
              * Width of time window in which a new debounced navigation may override the previous one.

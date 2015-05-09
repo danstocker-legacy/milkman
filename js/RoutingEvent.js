@@ -82,8 +82,9 @@ troop.amendPostponed(evan, 'Event', function () {
     "use strict";
 
     evan.Event
-        .addSurrogate(milkman, 'RoutingEvent', function (eventName, eventSpace) {
-            return eventSpace === milkman.routingEventSpace;
+        .addSurrogate(milkman, 'RoutingEvent', function (eventName) {
+            var prefix = 'milkman.route';
+            return eventName && eventName.substr(0, prefix.length) === prefix;
         });
 });
 

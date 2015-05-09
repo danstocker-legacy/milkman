@@ -16,8 +16,16 @@
     });
 
     test("Conversion from Event", function () {
-        var event = evan.Event.create('foo', milkman.routingEventSpace);
-        ok(event.isA(milkman.RoutingEvent), "should return RoutingEvent instance");
+        var eventSpace = evan.EventSpace.create(),
+            event;
+
+        event = evan.Event.create('foo', eventSpace);
+        ok(!event.isA(milkman.RoutingEvent),
+            "should not return RoutingEvent instance for event names with non-matching prefix");
+
+        event = evan.Event.create('milkman.route.foo', eventSpace);
+        ok(event.isA(milkman.RoutingEvent),
+            "should return RoutingEvent instance for event names with mathching prefix");
     });
 
     test("Before route setter", function () {
