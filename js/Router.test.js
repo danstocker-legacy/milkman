@@ -268,7 +268,7 @@
     });
 
     asyncTest("Debounced navigation", function () {
-        expect(3);
+        expect(2);
 
         milkman.Router.clearInstanceRegistry();
 
@@ -276,7 +276,6 @@
             navigateToRoute: function (route) {
                 strictEqual(this, router, "should call navigation on router instance");
                 strictEqual(route, targetRoute3, "should navigate to last route route");
-                start();
             }
         });
 
@@ -286,7 +285,10 @@
             targetRoute2 = 'bar'.toRoute(),
             targetRoute3 = 'baz'.toRoute();
 
-        strictEqual(router.navigateToRouteDebounced(targetRoute1), router, "should be chainable");
+        router.navigateToRouteDebounced(targetRoute1)
+            .then(function () {
+                start();
+            });
 
         router.navigateToRouteDebounced(targetRoute2);
 

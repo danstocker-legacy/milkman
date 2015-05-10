@@ -112,15 +112,18 @@
     test("Debounced navigation", function () {
         expect(2);
 
-        var route = 'foo/bar'.toRoute();
+        var route = 'foo/bar'.toRoute(),
+            promise = {};
 
         milkman.Router.addMocks({
             navigateToRouteDebounced: function (targetRoute) {
                 strictEqual(targetRoute, route, "should navigate to current route");
+                return promise;
             }
         });
 
-        strictEqual(route.navigateToDebounced(), route, "should be chainable");
+        strictEqual(route.navigateToDebounced(), promise,
+            "should return promise returned by router");
 
         milkman.Router.removeMocks();
     });

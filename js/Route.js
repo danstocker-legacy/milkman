@@ -92,7 +92,7 @@ troop.postpone(milkman, 'Route', function () {
             /**
              * Navigates app to current route asynchronously.
              * Synchronous operations following the call to this method will complete before leaving the current route.
-             * @returns {Q.Promise}
+             * @returns {Q.Promise} Resolves eventually when the async call goes through.
              */
             navigateToAsync: function () {
                 return milkman.Router.create()
@@ -102,12 +102,11 @@ troop.postpone(milkman, 'Route', function () {
             /**
              * Navigates app to current route debounced. Subsequent calls to this method on equivalent routes
              * within the time window specified by `Router` will cancel and override previous ones.
-             * @returns {milkman.Route}
+             * @returns {Q.Promise} Resolves eventually when the last debounced call goes through.
              */
             navigateToDebounced: function () {
-                milkman.Router.create()
+                return milkman.Router.create()
                     .navigateToRouteDebounced(this);
-                return this;
             },
 
             /**

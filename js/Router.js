@@ -199,11 +199,10 @@ troop.postpone(milkman, 'Router', function () {
              * Navigates to the specified route de-bounced. Subsequent calls to debounced navigation
              * within the allotted time frame will override previous ones.
              * @param {milkman.Route} route
-             * @returns {milkman.Router}
+             * @returns {Q.Promise}
              */
             navigateToRouteDebounced: function (route) {
-                this.navigationDebouncer.runDebounced(this.NAVIGATION_DEBOUNCE_DELAY, route);
-                return this;
+                return this.navigationDebouncer.runDebounced(this.NAVIGATION_DEBOUNCE_DELAY, route);
             },
 
             /**
