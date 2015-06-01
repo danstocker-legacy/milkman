@@ -28,29 +28,9 @@ troop.postpone(milkman, 'HashProxy', function () {
              */
             _hashSetterProxy: function (hash) {
                 window.location.hash = hash;
-            },
-
-            /**
-             * Retrieves the current hash from the URL.
-             * @returns {string}
-             * @private
-             */
-            _hashGetterProxy: function () {
-                return window.location.hash;
             }
         })
         .addMethods(/** @lends milkman.HashProxy# */{
-            /**
-             * Fetches the current application route based on URL hash.
-             * @returns {milkman.Route}
-             */
-            getRoute: function () {
-                var hash = this._hashGetterProxy(),
-                    path = hash.substr(1);
-
-                return path.toRoute();
-            },
-
             /**
              * Sets the current application state via the URL hash.
              * @param {milkman.Route} route

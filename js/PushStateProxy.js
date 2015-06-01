@@ -22,14 +22,6 @@ troop.postpone(milkman, 'PushStateProxy', function () {
     milkman.PushStateProxy = self
         .addPrivateMethods(/** @lends milkman.PushStateProxy# */{
             /**
-             * @returns {string}
-             * @private
-             */
-            _pathNameGetterProxy: function () {
-                return window.location.pathname;
-            },
-
-            /**
              * @param {object} state
              * @param {string} title
              * @param {string} url
@@ -64,16 +56,6 @@ troop.postpone(milkman, 'PushStateProxy', function () {
             }
         })
         .addMethods(/** @lends milkman.PushStateProxy# */{
-            /**
-             * Retrieves the current application route based on location path.
-             * @returns {milkman.Route}
-             */
-            getRoute: function () {
-                var path = this._pathNameGetterProxy();
-                path = path.substr(1);
-                return path.toRoute();
-            },
-
             /**
              * Sets the current application route based on pushstate.
              * @param {milkman.Route} route

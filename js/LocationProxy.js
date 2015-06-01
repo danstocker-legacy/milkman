@@ -21,9 +21,63 @@ troop.postpone(milkman, 'LocationProxy', function () {
      * @extends troop.Base
      */
     milkman.LocationProxy = self
+        .addPrivateMethods(/** @lends milkman.LocationProxy# */{
+            /**
+             * @returns {string}
+             * @private
+             */
+            _pathNameGetterProxy: function () {
+                return window.location.pathname;
+            },
+
+            /**
+             * Retrieves the current hash from the URL.
+             * @returns {string}
+             * @private
+             */
+            _hashGetterProxy: function () {
+                return window.location.hash;
+            }
+        })
         .addMethods(/** @lends milkman.LocationProxy# */{
             /** @ignore */
             init: function () {
+            },
+
+            /**
+             * Tests whether document location contains no hash.
+             * @returns {boolean}
+             */
+            isPurelyPathNameBased: function () {
+                return !this._hashGetterProxy();
+            },
+
+            /**
+             * Tests whether path name is
+             * @returns {boolean}
+             */
+            isPurelyHashBased: function () {
+                return this._pathNameGetterProxy().length <= 1;
+            },
+
+            /**
+             * Fetches the current application route based on the current path and hash.
+             * @returns {milkman.Route}
+             */
+            getRoute: function () {
+                var pathName = this._pathNameGetterProxy().substr(1),
+                    hash = this._hashGetterProxy().substr(1),
+                    asArray = [];
+
+                if (pathName) {
+                    asArray.push(pathName);
+                }
+
+                if (hash) {
+                    asArray.push(hash);
+                }
+
+                return asArray.toRoute();
             }
         });
 

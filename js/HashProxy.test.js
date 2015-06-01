@@ -15,22 +15,6 @@
         ok(locationProxy.isA(milkman.HashProxy), "should return HashProxy instance");
     });
 
-    test("Route getter", function () {
-        milkman.HashProxy.addMocks({
-            _hashGetterProxy: function () {
-                ok(true, "should fetch URL hash");
-                return '#foo';
-            }
-        });
-
-        var route = milkman.HashProxy.create().getRoute();
-
-        ok(route.isA(milkman.Route), "should return Route instance");
-        equal(route.toString(), 'foo', "should set route content");
-
-        milkman.HashProxy.removeMocks();
-    });
-
     test("Route setter", function () {
         expect(4);
 
