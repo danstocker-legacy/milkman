@@ -17,8 +17,8 @@
         ok(locationProxy.isA(milkman.PushStateProxy), "should return PushStateProxy instance");
     });
 
-    test("Route setter", function () {
-        expect(7);
+    test("Changing push state path", function () {
+        expect(6);
 
         var pushStateProxy = milkman.PushStateProxy.create();
 
@@ -30,10 +30,10 @@
             pushStateProxy.setRoute('foo');
         }, "should raise exception on invalid arguments");
 
-        milkman.PushStateProxy.addMocks({
+        pushStateProxy.addMocks({
             getRoute: function () {
                 ok(true, "should fetch current route");
-                return 'foo'.toRoute();
+                return ''.toRoute();
             },
 
             _pushStateProxy: function (state, title, url) {
@@ -46,10 +46,5 @@
         });
 
         strictEqual(pushStateProxy.setRoute('bar'.toRoute()), pushStateProxy, "should be chainable");
-
-        // will trigger only the current route getter
-        pushStateProxy.setRoute('foo'.toRoute());
-
-        milkman.PushStateProxy.removeMocks();
     });
 }());

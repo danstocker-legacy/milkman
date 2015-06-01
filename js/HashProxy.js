@@ -28,6 +28,14 @@ troop.postpone(milkman, 'HashProxy', function () {
              */
             _hashSetterProxy: function (hash) {
                 window.location.hash = hash;
+            },
+
+            /**
+             * @param {string} location
+             * @private
+             */
+            _documentLocationSetterProxy: function (location) {
+                document.location = location;
             }
         })
         .addMethods(/** @lends milkman.HashProxy# */{
@@ -38,8 +46,21 @@ troop.postpone(milkman, 'HashProxy', function () {
              */
             setRoute: function (route) {
                 dessert.isRoute(route, "Invalid route");
-                var hash = '#' + route.toString();
-                this._hashSetterProxy(hash);
+
+                var currentRoute = this.getRoute(),
+                    hash = '#' + route.toString();
+
+                if (!currentRoute.equals(route)) {
+                    if (this.isPurelyHashBased()) {
+                        // current route is hash-based
+                        // setting new route as hash
+                        this._hashSetterProxy(hash);
+                    } else {
+                        // hard re-directing to application root, with full route specified as hash
+                        this._documentLocationSetterProxy('/' + hash);
+                    }
+                }
+
                 return this;
             },
 
