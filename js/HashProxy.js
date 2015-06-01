@@ -51,7 +51,7 @@ troop.postpone(milkman, 'HashProxy', function () {
                     hash = '#' + route.toString();
 
                 if (!currentRoute.equals(route)) {
-                    if (this.isPurelyHashBased()) {
+                    if (this.isHashBased()) {
                         // current route is hash-based
                         // setting new route as hash
                         this._hashSetterProxy(hash);

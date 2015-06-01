@@ -45,18 +45,18 @@ troop.postpone(milkman, 'LocationProxy', function () {
             },
 
             /**
-             * Tests whether document location contains no hash.
+             * Tests whether it is only the location path name contributing to the route.
              * @returns {boolean}
              */
-            isPurelyPathNameBased: function () {
+            isPathNameBased: function () {
                 return !this._hashGetterProxy();
             },
 
             /**
-             * Tests whether path name is
+             * Tests whether it is only the location hash contributing to the route.
              * @returns {boolean}
              */
-            isPurelyHashBased: function () {
+            isHashBased: function () {
                 return this._pathNameGetterProxy().length <= 1;
             },
 
@@ -80,13 +80,6 @@ troop.postpone(milkman, 'LocationProxy', function () {
                 return asArray.join('/').toRoute();
             }
         });
-
-    /**
-     * Gets the current route.
-     * @name milkman.LocationProxy#getRoute
-     * @function
-     * @returns {milkman.Route}
-     */
 
     /**
      * Sets the current route.

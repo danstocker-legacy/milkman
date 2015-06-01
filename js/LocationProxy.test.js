@@ -18,7 +18,7 @@
             }
         });
 
-        ok(locationProxy.isPurelyPathNameBased(), "should return true when there is no hash component");
+        ok(locationProxy.isPathNameBased(), "should return true when there is no hash component");
 
         locationProxy
             .removeMocks()
@@ -32,7 +32,7 @@
                 }
             });
 
-        ok(!locationProxy.isPurelyPathNameBased(), "should return false when there is hash component");
+        ok(!locationProxy.isPathNameBased(), "should return false when there is hash component");
     });
 
     test("Hash based tester", function () {
@@ -48,7 +48,7 @@
             }
         });
 
-        ok(locationProxy.isPurelyHashBased(), "should return true when there is no path name component");
+        ok(locationProxy.isHashBased(), "should return true when there is no path name component");
 
         locationProxy
             .removeMocks()
@@ -62,7 +62,7 @@
                 }
             });
 
-        ok(!locationProxy.isPurelyHashBased(), "should return false when there is path name component");
+        ok(!locationProxy.isHashBased(), "should return false when there is path name component");
     });
 
     test("Route getter", function () {

@@ -34,7 +34,7 @@
                 return ''.toRoute();
             },
 
-            isPurelyHashBased: function () {
+            isHashBased: function () {
                 ok(true, "should check if route is purely hash based");
                 return true;
             },
@@ -66,7 +66,7 @@
                 return ''.toRoute();
             },
 
-            isPurelyHashBased: function () {
+            isHashBased: function () {
                 ok(true, "should check if route is purely hash based");
                 return false;
             },
