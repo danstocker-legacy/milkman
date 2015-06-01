@@ -81,7 +81,7 @@
 
         route = locationProxy.getRoute();
         ok(route.isA(milkman.Route), "should return Route instance");
-        equal(route.toString(), 'foo/bar', "should include path name when only path name is populated");
+        ok(route.equals('foo/bar'.toRoute()), "should include path name when only path name is populated");
 
         locationProxy
             .removeMocks()
@@ -96,7 +96,7 @@
             });
 
         route = locationProxy.getRoute();
-        equal(route.toString(), 'baz/qux', "should include hash when only hash is populated");
+        ok(route.equals('baz/qux'.toRoute()), "should include hash when only hash is populated");
 
         locationProxy
             .removeMocks()
@@ -111,7 +111,7 @@
             });
 
         route = locationProxy.getRoute();
-        equal(route.toString(), 'foo/bar/baz/qux',
+        ok(route.equals('foo/bar/baz/qux'.toRoute()),
             "should include both path name and hash when both are populated");
     });
 }());

@@ -77,7 +77,7 @@ troop.postpone(milkman, 'LocationProxy', function () {
                     asArray.push(hash);
                 }
 
-                return asArray.toRoute();
+                return asArray.join('/').toRoute();
             }
         });
 
