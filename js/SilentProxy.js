@@ -43,7 +43,12 @@ troop.postpone(milkman, 'SilentProxy', function () {
              */
             setRoute: function (route) {
                 dessert.isRoute(route, "Invalid route");
+
                 self.currentRoute = route;
+
+                // calling main location change handler with current last original event
+                milkman.Router.create().onRouteChange(evan.originalEventStack.getLastEvent());
+
                 return this;
             }
         });
